@@ -1,2 +1,2 @@
 # derrida
-Visualization of Derrida's Margin
+Visualization of Derrida's Margins
