@@ -17,12 +17,12 @@
 
         d3.csv("data.csv", function(data) {
             console.log(data);
-        }); 
-        
+        });
 
-        /*
+
+
         d3.select('h3').style('color', 'darkblue');
-        d3.select('h3').style('font-size', '24px'); 
+        d3.select('h3').style('font-size', '24px');
 
         var fruits = ['apple', 'mango', 'banana', 'orange'];
         d3.select('ul')
@@ -34,25 +34,25 @@
 
         //Select SVG element
         var svg = d3.select('svg');
-        //Create rectangle element inside SVG
-        svg.append('rect')
-        .attr('x', 50)
-        .attr('y', 50)
-        .attr('width', 200)
-        .attr('height', 100)
-        .attr('fill', 'green');
 
-        //Select SVG element
-        var svg = d3.select('svg');
+        svg.attr('width',200)
+            .attr('height',200);
         //Create rectangle element inside SVG
-        svg.append('rect')
-        .attr('x', 50)
-        .attr('y', 50)
-        .attr('width', 200)
-        .attr('height', 100)
-        .attr('fill', 'green');
-        */
-        
+        var greenRect = svg.append('rect')
+                            .attr('x', 50)
+                            .attr('y', 50)
+                            .attr('width', 200)
+                            .attr('height', 100)
+                            .attr('fill', 'green');
+
+        var redRect = greenRect.transition()
+                                .duration(5000)
+                                .ease(d3.easeBounce)
+                                .attr('fill', 'red')
+                                .attr('height', 200)
+                                .attr('width', 100);
+
+
     </script>
 
     </body>
