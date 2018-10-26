@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Sample Scaffold</title>
+        <script src='https://d3js.org/d3.v4.min.js'></script>
+        <!--script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script-->
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+
+    <h3>Today is a beautiful day!!</h3>
+    <ul> </ul>
+    <svg></svg>
+
+    <script type="text/javascript" charset="utf-8">
+
+        d3.csv("data.csv", function(data) {
+            console.log(data);
+        }); 
+        
+
+        /*
+        d3.select('h3').style('color', 'darkblue');
+        d3.select('h3').style('font-size', '24px'); 
+
+        var fruits = ['apple', 'mango', 'banana', 'orange'];
+        d3.select('ul')
+            .selectAll('li')
+            .data(fruits)
+            .enter()
+            .append('li')
+            .text(function(d) { return d; });
+
+        //Select SVG element
+        var svg = d3.select('svg');
+        //Create rectangle element inside SVG
+        svg.append('rect')
+        .attr('x', 50)
+        .attr('y', 50)
+        .attr('width', 200)
+        .attr('height', 100)
+        .attr('fill', 'green');
+
+        //Select SVG element
+        var svg = d3.select('svg');
+        //Create rectangle element inside SVG
+        svg.append('rect')
+        .attr('x', 50)
+        .attr('y', 50)
+        .attr('width', 200)
+        .attr('height', 100)
+        .attr('fill', 'green');
+        */
+        
+    </script>
+
+    </body>
+
+</html>
