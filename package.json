@@ -13,7 +13,9 @@
   "dependencies": {
     "angular": "latest",
     "angular-ui-router": "~0.2.11",
+    "d3": "^5.7.0",
     "d3-fetch": "^1.1.2",
+    "d3-request": "^1.0.6",
     "dat-gui": "latest",
     "express": "^4.16.4",
     "path": "latest",
