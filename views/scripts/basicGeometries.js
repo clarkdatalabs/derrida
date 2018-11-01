@@ -51,7 +51,7 @@ svg.attr('width',svgWidth)
 
 
 d3.csv("data/data.csv", function(data) {
-    console.log(data);
+    //console.log(data);
     var derrida_data = data;
 
     drawPages();
