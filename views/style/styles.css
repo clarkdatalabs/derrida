@@ -12,3 +12,9 @@ h3 {
   color: darkblue;
   font-size: 24px;
 }
+
+
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}
