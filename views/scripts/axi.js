@@ -1,3 +1,4 @@
+
 /*
     Variables
 */
@@ -6,8 +7,8 @@ var margin = { top: 50, right: 50, bottom: 50, left: 50 }
 var height = 500 - margin.top - margin.bottom
 var width = 500 - margin.left - margin.right
 
-var body = d3.select("body")
-            .append("svg")
+var body = d3.select("svg")
+            //.append("svg")
             .attr("width", width)
             .attr("height", height);
 /*
@@ -65,7 +66,7 @@ d3.csv("data/combined.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(d) {
         if(d.Date == 'NA' || d.PublicationYear == 'NA' ){
-            d.Date = 1776
+            d.Date = 1500
         }
         else{
             d.Date = +d.Date;
@@ -93,8 +94,8 @@ d3.csv("data/combined.csv", function(data) {
         .range([height,0])
 
     var xScale = d3.scaleLinear()
-        .domain([minY, maxY])
-        .range([height,0])
+        .domain([minX, maxX])
+        .range([0,width])
 
 
     //Y-Axis
@@ -102,14 +103,18 @@ d3.csv("data/combined.csv", function(data) {
             //.tickSize(width)
             .scale(yScale)
             //.tickFormat(d3.timeFormat("%Y"))
-            .ticks(50)
+            .ticks(10)
             //.orient('left');
-
+    
+    // Add scales to axis
+    var xAxis = d3.axisBottom()
+            .scale(xScale)
+    
     //Display SVG
     svg.append('g')
         .attr('class', 'axis')
         .call(yAxis)
-        //.call(customYAxis);
+        //.call(customYAxis)
         .append('text') // y-axis Label
         .attr('class','label')
         .attr('transform','rotate(-90)')
@@ -117,7 +122,12 @@ d3.csv("data/combined.csv", function(data) {
         .attr('y',5)
         .attr('dy','.71em')
         .style('text-anchor','end')
-        .text('Date Published') 
+        .text('Date Published');
+
+    
+    svg.append("g")
+        .attr("transform", "translate(0, " + height  +")")
+        .call(xAxis)
 });
 
 
