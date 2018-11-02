@@ -18,3 +18,9 @@ h3 {
 	font-family: sans-serif;
 	font-size: 11px;
 }
+
+svg {
+    width: 960px;
+    height: 500px;
+    border: 1px solid gray;
+  }

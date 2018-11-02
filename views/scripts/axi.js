@@ -65,7 +65,7 @@ d3.csv("data/combined.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(d) {
         if(d.Date == 'NA' || d.PublicationYear == 'NA' ){
-            d.Date = 0
+            d.Date = 1776
         }
         else{
             d.Date = +d.Date;
@@ -74,28 +74,34 @@ d3.csv("data/combined.csv", function(data) {
         
     });
 
-    //console.log(data)
+    var minX = 0;
+    var maxX = 445;
+
+    var minY = d3.min(data, function(d) { return d.Date });
+    var maxY = d3.max(data, function(d) { return d.Date });
+
+    //SVG
     var svg = body.append('svg')
         .attr('height',height + margin.top + margin.bottom)
         .attr('width',width + margin.left + margin.right)
         .append('g')
         .attr('transform','translate(' + margin.left + ',' + margin.top + ')')
 
-    //Scale
+    //Scales
     var yScale = d3.scaleLinear()
-        .domain([
-            d3.min(data,function (d) { return d.Date }),
-            d3.max(data,function (d) { return d.Date })
-        ])
-        //.domain(d3.extent(data,function(d){return d.PublicationYear}))
+        .domain([minY, maxY])
+        .range([height,0])
+
+    var xScale = d3.scaleLinear()
+        .domain([minY, maxY])
         .range([height,0])
 
 
-    //Y Axis
+    //Y-Axis
     var yAxis = d3.axisLeft()
             //.tickSize(width)
             .scale(yScale)
-            .tickFormat(d3.timeFormat("%Y"))
+            //.tickFormat(d3.timeFormat("%Y"))
             .ticks(50)
             //.orient('left');
 
