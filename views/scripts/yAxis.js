@@ -95,7 +95,7 @@ d3.csv("data/combined.csv", function(data) {
     var yAxis = d3.axisLeft()
             //.tickSize(width)
             .scale(yScale)
-            //.tickFormat(d3.timeFormat("%Y"))
+            .tickFormat(d3.timeFormat("%Y"))
             .ticks(50)
             //.orient('left');
 
