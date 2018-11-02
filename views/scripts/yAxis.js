@@ -64,8 +64,14 @@ function customYAxis(svg) {
 d3.csv("data/combined.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(d) {
-        d.Date = +d.Date;
-        d.PublicationYear = +d.PublicationYear;
+        if(d.Date == 'NA' || d.PublicationYear == 'NA' ){
+            d.Date = 0
+        }
+        else{
+            d.Date = +d.Date;
+            d.PublicationYear = +d.PublicationYear;
+        }
+        
     });
 
     //console.log(data)
@@ -78,8 +84,8 @@ d3.csv("data/combined.csv", function(data) {
     //Scale
     var yScale = d3.scaleLinear()
         .domain([
-            d3.min([0,d3.min(data,function (d) { return d.PublicationYear })]),
-            d3.max([0,d3.max(data,function (d) { return d.PublicationYear })])
+            d3.min(data,function (d) { return d.Date }),
+            d3.max(data,function (d) { return d.Date })
         ])
         //.domain(d3.extent(data,function(d){return d.PublicationYear}))
         .range([height,0])
@@ -89,7 +95,8 @@ d3.csv("data/combined.csv", function(data) {
     var yAxis = d3.axisLeft()
             //.tickSize(width)
             .scale(yScale)
-            //.ticks(5)
+            //.tickFormat(d3.timeFormat("%Y"))
+            .ticks(50)
             //.orient('left');
 
     //Display SVG
