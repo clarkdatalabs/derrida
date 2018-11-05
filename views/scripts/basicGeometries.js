@@ -36,61 +36,80 @@
 //                         .attr('width', 100);
 
 
-// 0. Set SVG to make it adaptable
-var svg = d3.select('svg');
-var svgWidth;
-var svgHeight;
+
+var totalPage = 445;
+var margin_left = 80;
+var margin_right = 10;
+var margin_bottom = 80;
+var padding_in_between = 0.5;
+
+var pageHeight = 40;
+var pageGroupWidth = (svgWidth) - margin_left - margin_right;
+var pageWidth = pageGroupWidth / totalPage - padding_in_between;
+
+var pageGroupY = svgHeight - pageHeight - margin_bottom;
+
+var pageData = d3.range(totalPage);
 
 
-svgWidth = $(window).width() - 30;
-svgHeight = $(window).height() - 90;
-svg.attr('width',svgWidth)
-    .attr('height',svgHeight)
-    .style('background', '#00D9E8');
 
+var pageContext = svg.append("g")
+                    .attr('class','pageContext')
+                    .attr("transform", "translate(" + margin_left + "," +  pageGroupY + ")");
 
-
-d3.csv("data/data.csv", function(data) {
-    console.log(data);
-    var derrida_data = data;
-
-    drawPages();
-});
-
-
+var pageXConverter;
 
 
 
 function drawPages(){
-    // 1.0 Set some Parameters
-    var totalPage = 425;  //This is the largest page num in the data, but the real number might be larger
-    var margin_left_and_right = 10;
-    var padding_in_between = 0.5;
-
-    var pageHeight = 40;
-    var pageGroupWidth = (svgWidth) - 2 * margin_left_and_right;
-    var pageWidth = pageGroupWidth / totalPage - padding_in_between;
-
-
     // 1.1 conver page to x value based on svgWidth
-    var pageXConverter = d3.scaleLinear()
+    pageXConverter = d3.scaleLinear()
                             .domain([0, totalPage])
                             .range([0, pageGroupWidth]);
 
 
     // 1.2 Create the group for pages and keep the margin
-    var pages = svg.append("g")
-                    .attr("transform", "translate(" + margin_left_and_right + "," +  svgHeight/2 + ")")
+
+    var pageGroup = pageContext.append("g")
+                                .attr('class','pageGroup')
+
 
 
     // 1.3 create the pages
-    pages.selectAll('.page')
-            .data(d3.range(totalPage))
-            .enter()
-            .append('rect')
-            .attr('class', 'page')
-            .attr('width', pageWidth)
-            .attr('height', pageHeight)
-            .attr('x', (d,i) => pageXConverter(i))
-            .style('fill', 'orange')
+    pageGroup.selectAll('.page')
+                .data(pageData)
+                .enter()
+                .append('rect')
+                .attr('class', 'page')
+                .attr('width', pageWidth)
+                .attr('height', pageHeight)
+                .attr('x', (d,i) => pageXConverter(i))
+                .style('fill', 'orange')
+}
+
+
+
+
+
+// 2 brush on pages
+var brush = d3.brushX()
+    .extent([[0, 0], [pageGroupWidth, pageHeight]])
+    .on("brush end", brushed);
+
+var brushXConverter = d3.scaleLinear()
+                        .domain([0, totalPage])
+                        .range([0, pageGroupWidth]);
+
+
+pageContext.append("g")
+              .attr("class", "brush")
+              .call(brush)
+              .call(brush.move, pageXConverter.range());
+
+
+function brushed() {
+    var s = d3.event.selection || brushXConverter.range();
+    var brushedStartPage = s[0];
+    var brushedEndPage = s[1];
+    console.log(brushedEndPage)
 }

@@ -17,8 +17,32 @@
 
 
 
+        <script>
+            //  Set some other Parameters that are needed in more than one js files
+                var svg = d3.select('svg');
+                var svgWidth = $(window).width() - 30;
+                var svgHeight = $(window).height() - 90;
 
+
+            //set svg
+                svg.attr('width',svgWidth)
+                    .attr('height',svgHeight)
+                    .style('background', '#00D9E8');
+
+            // make use of csv data,
+                d3.csv("data/data.csv", function(data) {
+                    console.log(data);
+                    var derrida_data = data;
+
+                    drawPages();
+
+                });
+
+
+
+        </script>
         <script src='scripts/basicGeometries.js'></script>
+
     </body>
 
 </html>
