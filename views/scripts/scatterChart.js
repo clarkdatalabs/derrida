@@ -21,9 +21,10 @@ d3.csv("data/combined.csv", function(data) {
 
     });
 
-  
+    
+ 
    
-    var margin = {top: 20, right: 15, bottom: 60, left: 60}
+    var margin = {top: 20, right: 10, bottom: 80, left: 80}
       , width = 960 - margin.left - margin.right
       , height = 500 - margin.top - margin.bottom;
     
