@@ -1,14 +1,14 @@
-d3.csv("data/data.csv", function(data) {
+d3.csv("data/combined.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(error,d) {
-        if (error) throw error;
+        //if (error) throw error;
 
         if (d.Date == 'NA' || d.Date == 'NAN'){
             d.Date = 1500;
         }
         else{
             d.Date = +d.Date;
-            d.PublicationYear = +d.PublicationYear;
+            //d.PublicationYear = +d.PublicationYear;
         }
 
         if (d.page == 'NaN' || d.page == 'NA' ){
