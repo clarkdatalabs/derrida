@@ -4,7 +4,7 @@ d3.csv("data/combined.csv", function(data) {
         //if (error) throw error;
 
         if (d.Date == 'NA' || d.PublicationYear == 'NA' ){
-            d.Date = 1500;
+            d.Date = 0;
         }
         else{
             d.Date = +d.Date;
@@ -21,13 +21,15 @@ d3.csv("data/combined.csv", function(data) {
 
     });
 
+  
+    var margin = {top: 20, right: 15, bottom: 60, left: 80}
+    var width = 960 - margin.left - margin.right
+    var height = 500 - margin.top - margin.bottom;
     
- 
-   
-    var margin = {top: 20, right: 10, bottom: 80, left: 80}
-      , width = 960 - margin.left - margin.right
-      , height = 500 - margin.top - margin.bottom;
+    var svgWidth = $(window).width() - 30;
+    var svgHeight = $(window).height() - 90;
     
+    // Scale the range of the data  
     var x = d3.scaleLinear()
               .domain([0, d3.max(data, function (d) { return d.page; })])
               .range([ 0, width ]);
@@ -36,50 +38,47 @@ d3.csv("data/combined.csv", function(data) {
     	      .domain([0, d3.max(data, function (d) { return d.Date; })])
     	      .range([ height, 0 ]);
  
+    //Create Canvass
     var chart = d3.select('svg')
     	.append('svg:svg')
-    	.attr('width', width + margin.right + margin.left)
-    	.attr('height', height + margin.top + margin.bottom)
+    	.attr('width', svgWidth)
+    	.attr('height', svgHeight)
     	.attr('class', 'chart')
 
+    //Create and add chart to canvas
     var main = chart.append('g')
     	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     	.attr('width', width)
     	.attr('height', height)
     	.attr('class', 'main')   
         
-    // draw the x axis
+    
+    // Draw the x axis
     var xAxis = d3.axisBottom()
     	.scale(x)
-    	//.orient('bottom');
-
+        //.orient('bottom');
+        
+    // Add x axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,' + height + ')')
-    	.attr('class', 'main axis date')
+    	//.attr('class', 'main axis date')
     	.call(xAxis);
 
-
-// scale the yAxis
-    var axisScale = d3.scaleLinear()               
-      .domain([0,100])
-      .range([0,100]);
-
-
-// https://www.dashingd3js.com/d3js-axes
-
-// http://bl.ocks.org/weiglemc/6185069
-    // draw the y axis
+    // Create the y axis
     var yAxis = d3.axisLeft()
-    	.scale(y)
-    	//.orient('left');
-
+        .scale(y)
+        .ticks(10)
+    
+        // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
-    	.attr('class', 'main axis date')
+    	//.attr('class', 'main axis date')
     	.call(yAxis);
 
+    
     var g = main.append("svg:g"); 
     
+    // Add the scatterplot
     g.selectAll("scatter-dots")
       .data(data)
       .enter().append("circle")
