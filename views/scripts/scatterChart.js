@@ -3,12 +3,12 @@ d3.csv("data/combined.csv", function(data) {
     data.forEach(function(error,d) {
         //if (error) throw error;
 
-        if (d.Date == 'NA' || d.Date == 'NAN'){
+        if (d.Date == 'NA' || d.PublicationYear == 'NA' ){
             d.Date = 1500;
         }
         else{
             d.Date = +d.Date;
-            //d.PublicationYear = +d.PublicationYear;
+            d.PublicationYear = +d.PublicationYear;
         }
 
         if (d.page == 'NaN' || d.page == 'NA' ){
@@ -35,7 +35,7 @@ d3.csv("data/combined.csv", function(data) {
     	      .domain([0, d3.max(data, function (d) { return d.Date; })])
     	      .range([ height, 0 ]);
  
-    var chart = d3.select('body')
+    var chart = d3.select('svg')
     	.append('svg:svg')
     	.attr('width', width + margin.right + margin.left)
     	.attr('height', height + margin.top + margin.bottom)
