@@ -3,7 +3,7 @@ d3.csv("data/combined.csv", function(data) {
     data.forEach(function(error,d) {
         //if (error) throw error;
 
-        if (d.Date == 'NA' || d.PublicationYear == 'NA' ){
+        if (d.Date == 'NA' || d.Date == 'NaN' ){
             d.Date = 0;
         }
         else{
@@ -26,26 +26,29 @@ d3.csv("data/combined.csv", function(data) {
     var width = 960 - margin.left - margin.right
     var height = 500 - margin.top - margin.bottom;
     
-    var svgWidth = $(window).width() - 30;
-    var svgHeight = $(window).height() - 90;
+    var minX = 0;
+    var maxX = 445;
+
+    var minY = d3.min(data, function(d) { return d.Date });
+    var maxY = d3.max(data, function(d) { return d.Date });
     
     // Scale the range of the data  
     var x = d3.scaleLinear()
-              .domain([0, d3.max(data, function (d) { return d.page; })])
+              .domain([0, maxX])
               .range([ 0, width ]);
     
     var y = d3.scaleLinear()
-    	      .domain([0, d3.max(data, function (d) { return d.Date; })])
+    	      .domain([0, maxY])
     	      .range([ height, 0 ]);
  
-    //Create Canvass
+    // Create Canvass
     var chart = d3.select('svg')
     	.append('svg:svg')
     	.attr('width', svgWidth)
     	.attr('height', svgHeight)
     	.attr('class', 'chart')
 
-    //Create and add chart to canvas
+    // Create and add chart to canvas
     var main = chart.append('g')
     	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     	.attr('width', width)
@@ -69,11 +72,14 @@ d3.csv("data/combined.csv", function(data) {
         .scale(y)
         .ticks(10)
     
-        // Add y axis to canvas
+    // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
-    	//.attr('class', 'main axis date')
-    	.call(yAxis);
+    	.attr('class', 'main axis date')
+        .call(yAxis)
+        .attr('x',0)
+        .attr('y',5)
+        .attr('dy','.71em')
 
     
     var g = main.append("svg:g"); 
@@ -83,6 +89,6 @@ d3.csv("data/combined.csv", function(data) {
       .data(data)
       .enter().append("circle")
           .attr("cx", function (d) { return x(d.page); } )
-          .attr("cy", function (d) { return y(d.PublicationYear); } )
-          .attr("r", 8);
+          .attr("cy", function (d) { return y(d.Date); } )
+          .attr("r", 4);
 });
