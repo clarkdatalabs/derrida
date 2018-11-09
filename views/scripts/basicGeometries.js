@@ -38,18 +38,19 @@
 
 
 var totalPage = 445;
+var numOfPageEveryRec = 1;
 var margin_left = 80;
 var margin_right = 10;
 var margin_bottom = 80;
-var padding_in_between = 0.5;
+var padding_in_between = 2.2;
 
 var pageHeight = 40;
 var pageGroupWidth = (svgWidth) - margin_left - margin_right;
-var pageWidth = pageGroupWidth / totalPage - padding_in_between;
+var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
 
 var pageGroupY = svgHeight - pageHeight - margin_bottom;
 
-var pageData = d3.range(totalPage);
+var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
 
 
 
@@ -83,7 +84,7 @@ function drawPages(){
                 .attr('class', 'page')
                 .attr('width', pageWidth)
                 .attr('height', pageHeight)
-                .attr('x', (d,i) => pageXConverter(i))
+                .attr('x', (d,i) => pageXConverter(i * numOfPageEveryRec))
                 .style('fill', 'orange')
 }
 
@@ -103,6 +104,7 @@ var brushXConverter = d3.scaleLinear()
 
 pageContext.append("g")
               .attr("class", "brush")
+              // .attr('padding', 2em)
               .call(brush)
               .call(brush.move, pageXConverter.range());
 
