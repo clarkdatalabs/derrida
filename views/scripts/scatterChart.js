@@ -79,7 +79,6 @@ d3.csv("data/combined.csv", function(data) {
         .scale(y)
         //.tickFormat(d3.timeFormat("%Y"))
         .ticks(20)
-
     // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
@@ -89,14 +88,34 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
-
-    var g = main.append("svg:g");
+    
+    var g = main.append("svg:g"); 
+    
+    // Define the div for the tooltip
+    var tooltip = d3.select("body")
+        .append("div")   
+        .attr("class", "tooltip")               
+        .style("opacity", 0);
 
     // Add the scatterplot
     g.selectAll("scatter-dots")
       .data(data)
       .enter().append("circle")
-          .attr("cx", function (d) { return brushXConverter(d.page); } )
+          .attr("cx", function (d) { return x(d.page); } )
           .attr("cy", function (d) { return y(d.Date); } )
-          .attr("r", 4);
+          .attr("r", 4)
+          .on("mouseover", function(d) {
+            div.transition()     
+                .duration(200)      
+                .style("opacity", .9);      
+            div.html(d.Date)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 28) + "px");    
+            })
+        .on("mouseout", function(d) {     
+            div.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+        });
+          
 });
