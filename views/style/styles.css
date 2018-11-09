@@ -12,3 +12,8 @@ h3 {
   color: darkblue;
   font-size: 24px;
 }
+
+
+.handle--custom{
+  z-index: 1;
+}

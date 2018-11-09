@@ -1,42 +1,4 @@
 
-
-
-
-
-//Trial Refferals
-// d3.select('h3').style('color', 'darkblue');
-// d3.select('h3').style('font-size', '24px');
-
-// var fruits = ['apple', 'mango', 'banana', 'orange'];
-// d3.select('ul')
-//     .selectAll('li')
-//     .data(fruits)
-//     .enter()
-//     .append('li')
-//     .text(function(d) { return d; });
-//
-// //Select SVG element
-// var svg = d3.select('svg');
-//
-// svg.attr('width',200)
-//     .attr('height',200);
-// //Create rectangle element inside SVG
-// var greenRect = svg.append('rect')
-//                     .attr('x', 50)
-//                     .attr('y', 50)
-//                     .attr('width', 200)
-//                     .attr('height', 100)
-//                     .attr('fill', 'green');
-//
-// var redRect = greenRect.transition()
-//                         .duration(5000)
-//                         .ease(d3.easeBounce)
-//                         .attr('fill', 'red')
-//                         .attr('height', 200)
-//                         .attr('width', 100);
-
-
-
 var totalPage = 445;
 var numOfPageEveryRec = 1;
 var margin_left = 80;
@@ -102,16 +64,50 @@ var brushXConverter = d3.scaleLinear()
                         .range([0, pageGroupWidth]);
 
 
-pageContext.append("g")
-              .attr("class", "brush")
-              // .attr('padding', 2em)
-              .call(brush)
-              .call(brush.move, pageXConverter.range());
+var gBrush = pageContext.append("g")
+                          .attr("class", "brush")
+                          .call(brush)
+                          // .call(brush.move, pageXConverter.range());
 
+
+var brushResizePath = function(d) {
+    var e = +(d.type == "e"),
+        x = e ? 1 : -1,
+        y = pageHeight / 2;
+    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+}
+
+
+var handle = gBrush.selectAll(".handle--custom")
+                    .data([{type: "w"}, {type: "e"}])
+                    .enter().append("path")
+                    .attr("class", "handle--custom")
+                    .attr("stroke", "#000")
+                    .attr("fill", "rgba(0,0,0,0.1)")
+                    .attr("cursor", "ew-resize")
+                    .attr("display", "none")
+                    .attr("d", brushResizePath);
+
+gBrush.call(brush.move, pageXConverter.range());
+
+// function brushmoved() {
+//   var s = d3.event.selection;
+
+// }
 
 function brushed() {
     var s = d3.event.selection || brushXConverter.range();
-    var brushedStartPage = s[0];
-    var brushedEndPage = s[1];
+    var s = d3.event.selection;
+
+    if (s[1] == 0) {
+      handle.attr("display", "none");
+      // circle.classed("active", false);
+    } else {
+      // circle.classed("active", function(d) { return s[0] <= d && d <= s[1]; });
+      handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - pageHeight / 4] + ")"; });
+    }
+
+    var brushedStartPage = Math.floor(s[0] * totalPage/pageGroupWidth);
+    var brushedEndPage = Math.floor(s[1] * totalPage/pageGroupWidth);
     console.log(brushedEndPage)
 }
