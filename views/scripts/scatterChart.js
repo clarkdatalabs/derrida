@@ -101,10 +101,10 @@ d3.csv("data/combined.csv", function(data) {
     g.selectAll("scatter-dots")
       .data(data)
       .enter().append("circle")
-          .attr("cx", function (d) { return x(d.page); } )
+          .attr("cx", function (d) { return brushXConverter(d.page); } )
           .attr("cy", function (d) { return y(d.Date); } )
           .attr("r", 4)
-          .on("mouseover", function(d) {
+          /*.on("mouseover", function(d) {
             div.transition()     
                 .duration(200)      
                 .style("opacity", .9);      
@@ -116,6 +116,6 @@ d3.csv("data/combined.csv", function(data) {
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
-        });
+        });*/
           
 });
