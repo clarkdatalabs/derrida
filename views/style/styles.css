@@ -1,0 +1,28 @@
+body {
+    background-color: powderblue;
+}
+h1 {
+    color: blue;
+}
+p {
+    color: rgb(103, 103, 253);
+}
+
+h3 {
+  color: darkblue;
+  font-size: 24px;
+}
+
+.chart {
+}
+.main text {
+    font: 10px sans-serif;	
+}
+.axis line, .axis path {
+    shape-rendering: crispEdges;
+    stroke: black;
+    fill: none;
+}
+circle {
+    fill: steelblue;
+}
