@@ -1,6 +1,15 @@
 // parse the date / time
 //var parseTime = d3.timeParse("%y");
 
+
+
+
+var scatters;
+var links;
+
+var y;
+
+
 d3.csv("data/combined.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(error,d) {
@@ -25,6 +34,12 @@ d3.csv("data/combined.csv", function(data) {
     });
 
 
+    var minX = 0;
+    var maxX = 445;
+
+    var minY = d3.min(data, function(d) { return d.Date });
+    var maxY = d3.max(data, function(d) { return d.Date });
+
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
     // var height = 500 - margin.top - margin.bottom;
@@ -32,21 +47,17 @@ d3.csv("data/combined.csv", function(data) {
     var heightXAxis = height + pageHeight;
 
 
-    var minX = 0;
-    var maxX = 445;
-
-    var minY = d3.min(data, function(d) { return d.Date });
-    var maxY = d3.max(data, function(d) { return d.Date });
-
     // // Scale the range of the data
     // var x = d3.scaleLinear()
     //           .domain([0, maxX])
     //           .range([ 0, width ]);
 
-    var y = d3.scaleLinear()
+    y = d3.scaleLinear()
               //.domain([0, 2017]) //There's some values assigned to 0 from data
               .domain([1500, 2017])
-    	      .range([ height, 0 ]);
+              .range([ height, 0 ]);
+
+
 
     // Create Canvass
     var chart = d3.select('svg')
@@ -88,34 +99,50 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
-    
-    var g = main.append("svg:g"); 
-    
+
+    var g = main.append("svg:g");
+
+    var gLinks = main.append('g')
+                    .attr('class', 'link')
+                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+
     // Define the div for the tooltip
     var tooltip = d3.select("body")
-        .append("div")   
-        .attr("class", "tooltip")               
+        .append("div")
+        .attr("class", "tooltip")
         .style("opacity", 0);
 
     // Add the scatterplot
-    g.selectAll("scatter-dots")
-      .data(data)
-      .enter().append("circle")
-          .attr("cx", function (d) { return brushXConverter(d.page); } )
-          .attr("cy", function (d) { return y(d.Date); } )
-          .attr("r", 4)
-          /*.on("mouseover", function(d) {
-            div.transition()     
-                .duration(200)      
-                .style("opacity", .9);      
-            div.html(d.Date)  
-                .style("left", (d3.event.pageX) + "px")     
-                .style("top", (d3.event.pageY - 28) + "px");    
-            })
-        .on("mouseout", function(d) {     
-            div.transition()        
-                .duration(500)      
-                .style("opacity", 0);   
-        });*/
-          
+    scatters = g.selectAll("scatter-dots")
+                  .data(data)
+                  .enter().append("circle")
+                      .attr('class', 'reference')
+                      .attr("cx", function (d) { return brushXConverter(d.page); } )
+                      .attr("cy", function (d) { return y(d.Date); } )
+                      .attr("r", 4)
+                  /*.on("mouseover", function(d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.html(d.Date)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });*/
+
+    //Add the links
+    links = gLinks.selectAll('.link')
+                    .data(data)
+                    .enter().append('line')
+                    .attr('class', 'link')
+                    .attr('x1', function (d) { return brushXConverter(d.page); }) // the x of scatter will change (maybe p.avePage)
+                    .attr('y1', function (d) { return y(d.Date) < height ? y(d.Date) : height ; })
+                    .attr('x2', function (d) { return brushXConverter(d.page); })
+                    .attr('y2', (d) => height)
+                    .attr('stroke-width', '0.4')
+                    .attr('stroke','#CCC')
 });

@@ -22,7 +22,7 @@ h3 {
 .chart {
 }
 .main text {
-    font: 10px sans-serif;	
+    font: 10px sans-serif;
 }
 .axis line, .axis path {
     shape-rendering: crispEdges;
@@ -33,3 +33,28 @@ circle {
     fill: steelblue;
 }
 >>>>>>> combined
+
+rect.page{
+  stroke: none;
+}
+rect.page.active{
+  stroke: steelblue;
+  stroke-width: 1;
+}
+
+circle.reference{
+  opacity: 0.1;
+  stroke: none;
+}
+circle.reference.selected{
+  opacity: 0.75;
+  stroke: orange;
+  stroke-width: 0.5;
+}
+
+line.link{
+  stroke-width: 0;
+}
+line.link.show{
+  stroke-width: 0.4;
+}
