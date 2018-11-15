@@ -1,18 +1,5 @@
 
-var totalPage = 445;
-var numOfPageEveryRec = 1;
-var margin_left = 80;
-var margin_right = 10;
-var margin_bottom = 80;
-var padding_in_between = 2.2;
 
-var pageHeight = 40;
-var pageGroupWidth = (svgWidth) - margin_left - margin_right;
-var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
-
-var pageGroupY = svgHeight - pageHeight - margin_bottom;
-
-var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
 
 
 
@@ -21,6 +8,9 @@ var pageContext = svg.append("g")
                     .attr("transform", "translate(" + margin_left + "," +  pageGroupY + ")");
 
 var pageXConverter;
+
+var pages;
+
 
 
 
@@ -39,16 +29,18 @@ function drawPages(){
 
 
     // 1.3 create the pages
-    pageGroup.selectAll('.page')
-                .data(pageData)
-                .enter()
-                .append('rect')
-                .attr('class', 'page')
-                .attr('width', pageWidth)
-                .attr('height', pageHeight)
-                .attr('x', (d,i) => pageXConverter(i * numOfPageEveryRec))
-                .style('fill', 'orange')
+    pages = pageGroup.selectAll('.page')
+                        .data(pageData)
+                        .enter()
+                        .append('rect')
+                        .attr('class', 'page')
+                        .attr('width', pageWidth)
+                        .attr('height', pageHeight)
+                        .attr('x', (d,i) => pageXConverter(i * numOfPageEveryRec))
+                        .style('fill', 'orange')
 }
+
+
 
 
 
@@ -88,26 +80,27 @@ var handle = gBrush.selectAll(".handle--custom")
                     .attr("display", "none")
                     .attr("d", brushResizePath);
 
-gBrush.call(brush.move, pageXConverter.range());
+gBrush.call(brush.move);
 
-// function brushmoved() {
-//   var s = d3.event.selection;
-
-// }
 
 function brushed() {
-    var s = d3.event.selection || brushXConverter.range();
     var s = d3.event.selection;
 
-    if (s[1] == 0) {
+    if (!s) {
       handle.attr("display", "none");
-      // circle.classed("active", false);
     } else {
-      // circle.classed("active", function(d) { return s[0] <= d && d <= s[1]; });
-      handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - pageHeight / 4] + ")"; });
+        var brushedStartPage = Math.floor(s[0] * totalPage/pageGroupWidth);
+        var brushedEndPage = Math.floor(s[1] * totalPage/pageGroupWidth);
+
+        pages.classed("active", function(d) { return brushedStartPage <= d && d <= brushedEndPage; });
+        handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - pageHeight / 4] + ")"; });
+
+        //highlight the circles accordingly
+        scatters.classed('selected', function(d){ return brushedStartPage <= d.page && d.page <= brushedEndPage; });
+
+        links.classed('show', function(d){ return brushedStartPage <= d.page && d.page <= brushedEndPage; });
     }
 
-    var brushedStartPage = Math.floor(s[0] * totalPage/pageGroupWidth);
-    var brushedEndPage = Math.floor(s[1] * totalPage/pageGroupWidth);
-    console.log(brushedEndPage)
+
+    // console.log(brushedEndPage)
 }

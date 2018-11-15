@@ -22,6 +22,21 @@
                 var svgWidth = $(window).width() - 30;
                 var svgHeight = $(window).height() - 90;
 
+                var totalPage = 445;
+                var numOfPageEveryRec = 1;
+                var margin_left = 80;
+                var margin_right = 10;
+                var margin_bottom = 80;
+                var padding_in_between = 2.2;
+
+                var pageHeight = 40;
+                var pageGroupWidth = (svgWidth) - margin_left - margin_right;
+                var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
+
+                var pageGroupY = svgHeight - pageHeight - margin_bottom;
+
+                var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
+
 
             //set svg
                 svg.attr('width',svgWidth)
