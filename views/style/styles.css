@@ -45,10 +45,9 @@ circle {
     pointer-events: none;
   }
 
-  #tooltip.hidden {
-    display: none;
-  }
-
+  /*
+    Styles P
+  */
   #tooltip p {
     margin: 0;
     font-family: Futura;
