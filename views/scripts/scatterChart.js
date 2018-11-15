@@ -90,6 +90,24 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
+    // Add Titles
+    main.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .attr("dy", "5em")
+      .attr("dx", "10em")
+      .text("Pages");   
+
+    main.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "3em")
+      .style("text-anchor", "middle")
+      .text("Year"); 
+
     
     var g = main.append("svg:g"); 
     
