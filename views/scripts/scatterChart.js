@@ -93,7 +93,7 @@ d3.csv("data/combined.csv", function(data) {
         .style("opacity", 0);
 
     // setup fill color
-    var cValue = function(d) { return d.Language;},
+    var cValue = function(d) { return d.language;},
         //color = d3.scale.category10(); #v2
         color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -101,6 +101,8 @@ d3.csv("data/combined.csv", function(data) {
                 .append('g')
                     .attr('class', 'link')
                     // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+
+
 
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
@@ -132,15 +134,5 @@ d3.csv("data/combined.csv", function(data) {
                         .style("opacity", 0);   
                 });
 
-    //Add the links
-    links = gLinks.selectAll('.link')
-                    .data(data)
-                    .enter().append('line')
-                    .attr('class', 'link')
-                    .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                    .attr('y1', function (d) { return y(d.date) < height ? y(d.date) : height ; })
-                    .attr('x2', function (d) { return brushXConverter(d.page); })
-                    .attr('y2', (d) => height)
-                    .attr('stroke-width', '0.4')
-                    .attr('stroke','#CCC')
+
 });
