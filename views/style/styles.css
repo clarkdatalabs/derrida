@@ -13,16 +13,13 @@ h3 {
   font-size: 24px;
 }
 
-<<<<<<< HEAD
 
 .handle--custom{
   z-index: 1;
 }
-=======
-.chart {
-}
+
 .main text {
-    font: 10px sans-serif;
+    font: 10px sans-serif;	
 }
 .axis line, .axis path {
     shape-rendering: crispEdges;
@@ -32,7 +29,7 @@ h3 {
 circle {
     fill: steelblue;
 }
->>>>>>> combined
+
 
 rect.page{
   stroke: none;
@@ -58,3 +55,28 @@ line.link{
 line.link.show{
   stroke-width: 0.4;
 }
+
+#tooltip {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  /*
+    Styles P
+  */
+  #tooltip p {
+    margin: 0;
+    font-family: Futura;
+    font-size: 16px;
+    line-height: 20px;
+  }
