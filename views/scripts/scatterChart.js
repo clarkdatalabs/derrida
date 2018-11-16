@@ -84,6 +84,11 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
+    var gLinks = main
+                .append('g')
+                    .attr('class', 'link')
+                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+
     
     var g = main.append("svg:g"); 
     
@@ -96,11 +101,6 @@ d3.csv("data/combined.csv", function(data) {
     var cValue = function(d) { return d.language;},
         //color = d3.scale.category10(); #v2
         color = d3.scaleOrdinal(d3.schemeCategory10);
-
-    var gLinks = main
-                .append('g')
-                    .attr('class', 'link')
-                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
 
 // ###############################################################
