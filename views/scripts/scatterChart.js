@@ -106,6 +106,12 @@ d3.csv("data/combined.csv", function(data) {
 // ###############################################################
 // all this is what i started trying to do on friday, november 16
 
+// here are the sources:
+//  https://github.com/d3/d3-selection
+//  https://gist.github.com/hrbrmstr/7700364
+//  https://bl.ocks.org/zanarmstrong/0b6276e033142ce95f7f374e20f1c1a7
+// 
+
     // to be used for legend.append("text")
     var commasFormatter = d3.format(",")
 
