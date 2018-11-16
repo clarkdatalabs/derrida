@@ -1,59 +1,65 @@
 body {
-    background-color: powderblue;
+    background-color: white;
 }
+
 h1 {
     color: blue;
 }
+
 p {
     color: rgb(103, 103, 253);
 }
 
 h3 {
-  color: darkblue;
-  font-size: 24px;
+    color: darkblue;
+    font-size: 24px;
 }
 
-
-.handle--custom{
-  z-index: 1;
+.handle--custom {
+    z-index: 1;
 }
 
 .main text {
-    font: 10px sans-serif;	
+    font: 10px sans-serif;
 }
-.axis line, .axis path {
+
+.axis line,
+.axis path {
     shape-rendering: crispEdges;
     stroke: black;
     fill: none;
 }
+
 circle {
     fill: steelblue;
 }
 
-
-rect.page{
-  stroke: none;
-}
-rect.page.active{
-  stroke: steelblue;
-  stroke-width: 1;
+rect.page {
+    stroke: none;
 }
 
-circle.reference{
-  opacity: 0.1;
-  stroke: none;
-}
-circle.reference.selected{
-  opacity: 0.75;
-  stroke: orange;
-  stroke-width: 0.5;
+rect.page.active {
+    stroke: steelblue;
+    stroke-width: 1;
 }
 
-line.link{
-  stroke-width: 0;
+circle.reference {
+    opacity: 0.8;
+    stroke: none;
 }
-line.link.show{
-  stroke-width: 0.4;
+
+circle.reference.selected {
+    opacity: 0.75;
+    stroke: none;
+    stroke-width: 0;
+}
+
+line.link {
+    stroke-width: 0;
+}
+
+line.link.show {
+    stroke-width: 0.4;
 }
 
 #tooltip {
@@ -69,14 +75,16 @@ line.link.show{
     -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     pointer-events: none;
-  }
+}
 
-  /*
+
+/*
     Styles P
   */
-  #tooltip p {
+
+#tooltip p {
     margin: 0;
     font-family: Futura;
     font-size: 16px;
     line-height: 20px;
-  }
+}
