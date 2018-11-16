@@ -1,9 +1,6 @@
 // parse the date / time
 //var parseTime = d3.timeParse("%y");
 
-
-
-
 var scatters;
 var links;
 
@@ -15,11 +12,11 @@ d3.csv("data/combined.csv", function(data) {
     data.forEach(function(error,d) {
         //if (error) throw error;
 
-        if (d.Date == 'NA' || d.Date == 'NaN' ){
-            d.Date = 0;
+        if (d.date == 'NA' || d.date == 'NaN' ){
+            d.date = 0;
         }
         else{
-            d.Date = +d.Date;
+            d.date = +d.date;
             d.PublicationYear = +d.PublicationYear;
         }
 
@@ -27,18 +24,15 @@ d3.csv("data/combined.csv", function(data) {
             d.page = 0;
         }
         else{
-            d.page = +d.Page;
+            d.page = +d.page;
         }
-
-
     });
-
 
     var minX = 0;
     var maxX = 445;
 
-    var minY = d3.min(data, function(d) { return d.Date });
-    var maxY = d3.max(data, function(d) { return d.Date });
+    var minY = d3.min(data, function(d) { return d.date });
+    var maxY = d3.max(data, function(d) { return d.date });
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -113,8 +107,10 @@ d3.csv("data/combined.csv", function(data) {
                 .data(data)
                 .enter().append("circle")
                     .attr('class', 'reference')
-                    .attr("cx", function (d) { return brushXConverter(d.page); } )
-                    .attr("cy", function (d) { return y(d.Date); } )
+                    // .attr("cx", function (d) { return brushXConverter(d.page); } )
+                    .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+
+                    .attr("cy", function (d) { return y(d.date); } )
                     .attr("r", 8)
                     .style("fill", function(d) { return color(cValue(d));})
                 .on("mouseover", function(d) {
@@ -122,9 +118,9 @@ d3.csv("data/combined.csv", function(data) {
                         .duration(200)      
                         //.style("opacity", .9);  
                         .style("opacity", 200);     
-                    div.html('<p>' + d.book_title + '</p>' +
-                        "<br/>Author: " + d.Author +
-                        "<br/>Publication Year: " + d.Date + 
+                    div.html('<p>' + d.bookTitle + '</p>' +
+                        "<br/>Author: " + d.author +
+                        "<br/>Publication Year: " + d.date + 
                         "<br/>Reference Type: " + 
                         d.ref_type)  
                         .style("left", (d3.event.pageX) + "px")     
@@ -141,8 +137,8 @@ d3.csv("data/combined.csv", function(data) {
                     .data(data)
                     .enter().append('line')
                     .attr('class', 'link')
-                    .attr('x1', function (d) { return brushXConverter(d.page); }) // the x of scatter will change (maybe p.avePage)
-                    .attr('y1', function (d) { return y(d.Date) < height ? y(d.Date) : height ; })
+                    .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
+                    .attr('y1', function (d) { return y(d.date) < height ? y(d.date) : height ; })
                     .attr('x2', function (d) { return brushXConverter(d.page); })
                     .attr('y2', (d) => height)
                     .attr('stroke-width', '0.4')
