@@ -15,9 +15,14 @@ d3.csv("data/combined.csv", function(data) {
         if (d.date == 'NA' || d.date == 'NaN' ){
             d.date = 0;
         }
+
+        if (d.dateLog == ''){
+            d.dateLog = 0;
+        }
         else{
             d.date = +d.date;
-            d.PublicationYear = +d.PublicationYear;
+            d.dateLog = +d.dateLog;
+            //d.PublicationYear = +d.PublicationYear;
         }
 
         if (d.page == 'NaN' || d.page == 'NA' ){
@@ -31,8 +36,8 @@ d3.csv("data/combined.csv", function(data) {
     var minX = 0;
     var maxX = 445;
 
-    var minY = d3.min(data, function(d) { return d.date });
-    var maxY = d3.max(data, function(d) { return d.date });
+    var minY = d3.min(data, function(d) { return d.dateLog });
+    var maxY = d3.max(data, function(d) { return d.dateLog });
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -42,7 +47,7 @@ d3.csv("data/combined.csv", function(data) {
     // Scale the range of the data
     var y = d3.scaleLinear()
         //.domain([0, 2017]) //There's some values assigned to 0 from data
-        .domain([1500, 2017])
+        .domain([10, 0])
         .range([ height, 0 ]);
 
     // Create Canvass
@@ -110,7 +115,7 @@ d3.csv("data/combined.csv", function(data) {
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
-                    .attr("cy", function (d) { return y(d.date); } )
+                    .attr("cy", function (d) { return y(d.dateLog); } )
                     .attr("r", 8)
                     .style("fill", function(d) { return color(cValue(d));})
                 .on("mouseover", function(d) {
@@ -138,7 +143,7 @@ d3.csv("data/combined.csv", function(data) {
                     .enter().append('line')
                     .attr('class', 'link')
                     .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                    .attr('y1', function (d) { return y(d.date) < height ? y(d.date) : height ; })
+                    .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
                     .attr('x2', function (d) { return brushXConverter(d.page); })
                     .attr('y2', (d) => height)
                     .attr('stroke-width', '0.4')
