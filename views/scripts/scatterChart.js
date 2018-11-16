@@ -76,7 +76,7 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
-    // Create the y axis
+    // Draw the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(20)
