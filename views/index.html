@@ -15,10 +15,7 @@
         <svg></svg>
         <div id="tooltip" class="hidden">
         </div>
-
-        <div id="maplegend" class="maplegend"> 
-        </div>
-
+        <script type="text/javascript" src="scripts/scatterChart.js"></script>
         <script>
             //  Set some other Parameters that are needed in more than one js files
                 var svg = d3.select('svg');
@@ -51,17 +48,18 @@
                     console.log(data);
                     var derrida_data = data;
 
-                    drawPages();
+                    // drawPages();
+                    // gBrush.call(brush.move, [0, pageGroupWidth]);
 
                 });
 
 
 
         </script>
-        <script src='scripts/basicGeometries.js'></script>
-        <svg></svg>
-        <script type="text/javascript" src="scripts/scatterChart.js"></script>
 
+        <!-- <svg></svg> -->
+
+        <script src='scripts/basicGeometries.js'></script>
     </body>
 
 </html>
