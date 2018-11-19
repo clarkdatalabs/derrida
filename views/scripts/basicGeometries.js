@@ -42,7 +42,7 @@ function drawPages() {
 
 
 
-drawPages();
+// drawPages();
 
 
 // 2 brush on pages
@@ -60,7 +60,7 @@ var brushXConverter = d3.scaleLinear()
 
 gBrush = pageContext.append("g")
     .attr("class", "brush")
-    .call(brush)
+    // .call(brush)
 
 
 var brushResizePath = function(d) {
@@ -83,7 +83,7 @@ var handle = gBrush.selectAll(".handle--custom")
 
 
 
-gBrush.call(brush.move, [0, pageGroupWidth]);
+// gBrush.call(brush.move, [0, pageGroupWidth]);
 
 
 

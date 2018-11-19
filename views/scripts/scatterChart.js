@@ -74,7 +74,7 @@ d3.csv("data/combined.csv", function(data) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(20)
-    
+
     // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
@@ -88,12 +88,12 @@ d3.csv("data/combined.csv", function(data) {
         .append('g')
             .attr('class', 'link')
                     // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
-    
-    var g = main.append("svg:g"); 
-    
+
+    var g = main.append("svg:g");
+
     // Define the div for the tooltip
     var div = d3.select("#tooltip")  //gets attribute from index.html
-        .attr("class", "tooltip")               
+        .attr("class", "tooltip")
         .style("opacity", 0);
 
     // setup fill color
@@ -114,10 +114,10 @@ d3.csv("data/combined.csv", function(data) {
         //     .append("svg")
         //     .attr("width", width)
         //     .attr("height", height - 50)
-        
+
         // var dataL = 0;
         // var offset = 80;
-        
+
         // var legend4 = svgLegned4.selectAll('.legend')
         //     // .data(legendVals2)
         //     .data()
@@ -126,15 +126,15 @@ d3.csv("data/combined.csv", function(data) {
         //     .attr("class", "legend")
         //     .attr("transform", function (d, i) {
         //      if (i === 0) {
-        //         dataL = d.length + offset 
+        //         dataL = d.length + offset
         //         return "translate(0,0)"
-        //     } else { 
+        //     } else {
         //      var newdataL = dataL
         //      dataL +=  d.length + offset
         //      return "translate(" + (newdataL) + ",0)"
         //     }
         // })
-        
+
         // legend.append('rect')
         //     .attr("x", 0)
         //     .attr("y", 0)
@@ -143,7 +143,7 @@ d3.csv("data/combined.csv", function(data) {
         //     .style("fill", function (d, i) {
         //     return color(i)
         // })
-        
+
         // legend.append('text')
         //     .attr("x", 20)
         //     .attr("y", 10)
@@ -160,8 +160,8 @@ d3.csv("data/combined.csv", function(data) {
 // commented out nobv 19 10:57am
 // this produced 5 black boxes that are labeled abcde
 
-//     // to be used for legend.append("text")
-//     var commasFormatter = d3.format(",")
+    // to be used for legend.append("text")
+    var commasFormatter = d3.format(",")
 
 // append legend to page
     var legendSVG = d3.select("#maplegend")
@@ -172,9 +172,9 @@ d3.csv("data/combined.csv", function(data) {
         .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
 
-    var language_data = 
-        [{language:"fr"}, 
-        {language:"da"}, 
+    var language_data =
+        [{language:"fr"},
+        {language:"da"},
         {language:"de"},
         {language:"en"},
         {language:"la"},
@@ -185,7 +185,7 @@ d3.csv("data/combined.csv", function(data) {
             .data(language_data)
             .enter()
             .append("g")
-            // .attr("class","leg") 
+            // .attr("class","leg")
 
     legend.append("rect")
             .attr("y", function(d,i) { return(i*30)})
@@ -198,7 +198,7 @@ d3.csv("data/combined.csv", function(data) {
             .attr("stroke","#7f7f7f")
             .attr("stroke-width","0.5");
             // color = d3.scaleOrdinal(d3.schemeCategory10);
-       
+
     legend.append("text")
                 // .attr("class", "legText")
                 .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
@@ -250,22 +250,22 @@ d3.csv("data/combined.csv", function(data) {
 
 
                 .on("mouseover", function(d) {
-                    div.transition()     
-                        .duration(200)      
-                        //.style("opacity", .9);  
-                        .style("opacity", 200);     
+                    div.transition()
+                        .duration(200)
+                        //.style("opacity", .9);
+                        .style("opacity", 200);
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date + 
-                        "<br/>Reference Type: " + 
-                        d.ref_type)  
-                        .style("left", (d3.event.pageX) + "px")     
+                        "<br/>Publication Year: " + d.date +
+                        "<br/>Reference Type: " +
+                        d.ref_type)
+                        .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px")
                     })
-                .on("mouseout", function(d) {     
-                    div.transition()        
-                        .duration(500)   
-                        .style("opacity", 0);   
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
                 });
 
     //Add the links
@@ -279,4 +279,9 @@ d3.csv("data/combined.csv", function(data) {
                     .attr('y2', (d) => height)
                     .attr('stroke-width', '0.4')
                     .attr('stroke','#CCC')
+
+
+    drawPages();
+    gBrush.call(brush);
+    gBrush.call(brush.move, [0, pageGroupWidth]);
 });
