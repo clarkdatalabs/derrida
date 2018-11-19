@@ -80,7 +80,7 @@ d3.csv("data/combined.csv", function(data) {
         .scale(y)
         .ticks(20)
         .tickFormat(function(d) {return 1970 - Math.floor(Math.pow(Math.exp(1), d));});
-    
+
     // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
@@ -95,12 +95,12 @@ d3.csv("data/combined.csv", function(data) {
                     .attr('class', 'link')
                     // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
-    
-    var g = main.append("svg:g"); 
-    
+
+    var g = main.append("svg:g");
+
     // Define the div for the tooltip
     var div = d3.select("#tooltip")  //gets attribute from index.html
-        .attr("class", "tooltip")               
+        .attr("class", "tooltip")
         .style("opacity", 0);
 
     // setup fill color
@@ -116,7 +116,7 @@ d3.csv("data/combined.csv", function(data) {
 //  https://github.com/d3/d3-selection
 //  https://gist.github.com/hrbrmstr/7700364
 //  https://bl.ocks.org/zanarmstrong/0b6276e033142ce95f7f374e20f1c1a7
-// 
+//
 
     // to be used for legend.append("text")
     var commasFormatter = d3.format(",")
@@ -125,7 +125,7 @@ d3.csv("data/combined.csv", function(data) {
 // append legend to page
     var legendSVG = d3.select("#maplegend")
                     .append("svg") ;
-          
+
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
         .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
@@ -135,7 +135,7 @@ d3.csv("data/combined.csv", function(data) {
             .data(data)
             .enter()
             .append("g")
-            .attr("class","leg") 
+            .attr("class","leg")
 
     legend.append("rect")
             .attr("y", function(d,i) { return(i*40)})
@@ -147,7 +147,7 @@ d3.csv("data/combined.csv", function(data) {
             .attr("stroke-width","0.5");
             // color = d3.scaleOrdinal(d3.schemeCategory10);
 
-            
+
     legend.append("text")
                 .attr("class", "legText")
                 // .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
@@ -155,7 +155,7 @@ d3.csv("data/combined.csv", function(data) {
                 .attr("x", 45)
                 .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
-     
+
     // var ordinal = d3.scaleOrdinal()
     //   .domain(d.language)
     //   .range(color);
@@ -194,22 +194,22 @@ d3.csv("data/combined.csv", function(data) {
                     .attr("r", 8)
                     .style("fill", function(d) { return color(cValue(d));})
                 .on("mouseover", function(d) {
-                    div.transition()     
-                        .duration(200)      
-                        //.style("opacity", .9);  
-                        .style("opacity", 200);     
+                    div.transition()
+                        .duration(200)
+                        //.style("opacity", .9);
+                        .style("opacity", 200);
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date + 
-                        "<br/>Reference Type: " + 
-                        d.ref_type)  
-                        .style("left", (d3.event.pageX) + "px")     
+                        "<br/>Publication Year: " + d.date +
+                        "<br/>Reference Type: " +
+                        d.ref_type)
+                        .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px")
                     })
-                .on("mouseout", function(d) {     
-                    div.transition()        
-                        .duration(500)   
-                        .style("opacity", 0);   
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
                 });
 
     //Add the links

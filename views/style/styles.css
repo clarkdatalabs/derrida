@@ -44,12 +44,12 @@ rect.page.active {
 }
 
 circle.reference {
-    opacity: 0.2;
+    opacity: 0.05;
     stroke: none;
 }
 
 circle.reference.selected {
-    opacity: 0.75;
+    opacity: 0.8;
     stroke: none;
     stroke-width: 0;
 }
@@ -60,6 +60,10 @@ line.link {
 
 line.link.show {
     stroke-width: 0.4;
+}
+
+.handle--custom{
+    z-index: 1;
 }
 
 #tooltip {
