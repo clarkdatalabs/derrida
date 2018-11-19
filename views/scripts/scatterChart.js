@@ -15,9 +15,14 @@ d3.csv("data/combined.csv", function(data) {
         if (d.date == 'NA' || d.date == 'NaN' ){
             d.date = 0;
         }
+
+        if (d.dateLog == ''){
+            d.dateLog = 0;
+        }
         else{
             d.date = +d.date;
-            d.PublicationYear = +d.PublicationYear;
+            d.dateLog = +d.dateLog;
+            //d.PublicationYear = +d.PublicationYear;
         }
 
         if (d.page == 'NaN' || d.page == 'NA' ){
@@ -31,8 +36,8 @@ d3.csv("data/combined.csv", function(data) {
     var minX = 0;
     var maxX = 445;
 
-    var minY = d3.min(data, function(d) { return d.date });
-    var maxY = d3.max(data, function(d) { return d.date });
+    var minY = d3.min(data, function(d) { return d.dateLog });
+    var maxY = d3.max(data, function(d) { return d.dateLog });
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -42,7 +47,7 @@ d3.csv("data/combined.csv", function(data) {
     // Scale the range of the data
     var y = d3.scaleLinear()
         //.domain([0, 2017]) //There's some values assigned to 0 from data
-        .domain([1500, 2017])
+        .domain([6.5, 0])
         .range([ height, 0 ]);
 
     // Create Canvass
@@ -74,6 +79,7 @@ d3.csv("data/combined.csv", function(data) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(20)
+        .tickFormat(function(d) {return 1970 - Math.floor(Math.pow(Math.exp(1), d));});
     
     // Add y axis to canvas
     main.append('g')
@@ -83,6 +89,11 @@ d3.csv("data/combined.csv", function(data) {
         .attr('y',5)
         .attr('dy','.71em')
         .call(yAxis)
+
+    var gLinks = main
+                .append('g')
+                    .attr('class', 'link')
+                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
     
     var g = main.append("svg:g"); 
@@ -97,10 +108,79 @@ d3.csv("data/combined.csv", function(data) {
         //color = d3.scale.category10(); #v2
         color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    var gLinks = main
-                .append('g')
-                    .attr('class', 'link')
-                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+
+// ###############################################################
+// all this is what i started trying to do on friday, november 16
+
+// here are the sources:
+//  https://github.com/d3/d3-selection
+//  https://gist.github.com/hrbrmstr/7700364
+//  https://bl.ocks.org/zanarmstrong/0b6276e033142ce95f7f374e20f1c1a7
+// 
+
+    // to be used for legend.append("text")
+    var commasFormatter = d3.format(",")
+
+
+// append legend to page
+    var legendSVG = d3.select("#maplegend")
+                    .append("svg") ;
+          
+    var ordinal = d3.scaleOrdinal()
+        .domain(["a", "b", "c", "d", "e"])
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
+
+// build legend
+    legend = legendSVG.selectAll(".lentry")
+            .data(data)
+            .enter()
+            .append("g")
+            .attr("class","leg") 
+
+    legend.append("rect")
+            .attr("y", function(d,i) { return(i*40)})
+            .attr("width","40px")
+            .attr("height","40px")
+
+            .attr("fill", function(d) { return cValue(data) ; })
+            .attr("stroke","#7f7f7f")
+            .attr("stroke-width","0.5");
+            // color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            
+    legend.append("text")
+                .attr("class", "legText")
+                // .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
+                .text(["a", "b", "c", "d", "e"])
+                .attr("x", 45)
+                .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
+
+     
+    // var ordinal = d3.scaleOrdinal()
+    //   .domain(d.language)
+    //   .range(color);
+
+    // var svg = d3.select("svg");
+
+    // svg.append("g")
+    //   .attr("class", "legendOrdinal")
+    //   .attr("transform", "translate(20,20)");
+
+    // var legendOrdinal = d3.legendColor()
+    //   //d3 symbol creates a path-string, for example
+    //   //"M0,-8.059274488676564L9.306048591020996,
+    //   //8.059274488676564 -9.306048591020996,8.059274488676564Z"
+    //   .shape("path", d3.symbol().type(d3.symbolTriangle).size(150)())
+    //   .shapePadding(10)
+    //   //use cellFilter to hide the "e" cell
+    //   .cellFilter(function(d){ return d.label !== "e" })
+    //   .scale(ordinal);
+
+    // svg.select(".legendOrdinal")
+    //   .call(legendOrdinal);
+// end of color legend
+//  ###############################################################
+
 
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
@@ -110,7 +190,7 @@ d3.csv("data/combined.csv", function(data) {
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
-                    .attr("cy", function (d) { return y(d.date); } )
+                    .attr("cy", function (d) { return y(d.dateLog); } )
                     .attr("r", 8)
                     .style("fill", function(d) { return color(cValue(d));})
                 .on("mouseover", function(d) {
@@ -138,7 +218,7 @@ d3.csv("data/combined.csv", function(data) {
                     .enter().append('line')
                     .attr('class', 'link')
                     .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                    .attr('y1', function (d) { return y(d.date) < height ? y(d.date) : height ; })
+                    .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
                     .attr('x2', function (d) { return brushXConverter(d.page); })
                     .attr('y2', (d) => height)
                     .attr('stroke-width', '0.4')

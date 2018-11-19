@@ -39,8 +39,6 @@ function drawPages() {
 
 
 
-
-
 // 2 brush on pages
 var brush = d3.brushX()
     .extent([
