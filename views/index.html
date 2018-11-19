@@ -10,12 +10,15 @@
 
     <body>
 
-        <h3>Derrida!</h3>
+        <h3>Derrida's <br><i>Sources</i></h3></h3>
         <!-- <ul> </ul> -->
         <svg></svg>
         <div id="tooltip" class="hidden">
         </div>
-        <script type="text/javascript" src="scripts/scatterChart.js"></script>
+
+        <div id="maplegend" class="maplegend">
+        </div>
+
         <script>
             //  Set some other Parameters that are needed in more than one js files
                 var svg = d3.select('svg');
@@ -43,23 +46,22 @@
                     .attr('height',svgHeight)
                     .style('background', '#ffffff');
 
-            // make use of csv data,
-                d3.csv("data/data.csv", function(data) {
-                    console.log(data);
-                    var derrida_data = data;
-
-                    // drawPages();
-                    // gBrush.call(brush.move, [0, pageGroupWidth]);
-
-                });
+            // The DATA is now made use of in "scripts/scatterChart.js"
+                // make use of csv data,
+                    // d3.csv("data/data.csv", function(data) {
+                    //     console.log(data);
+                    //     var derrida_data = data;
+                    //
+                    //     drawPages();
+                    //
+                    // });
 
 
 
         </script>
-
-        <!-- <svg></svg> -->
-
         <script src='scripts/basicGeometries.js'></script>
+        <script type="text/javascript" src="scripts/scatterChart.js"></script>
+
     </body>
 
 </html>
