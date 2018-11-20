@@ -44,7 +44,7 @@ rect.page.active {
 }
 
 circle.reference {
-    opacity: 0.2;
+    opacity: 0.05;
     stroke: none;
 }
 
@@ -67,7 +67,7 @@ line.link.show {
     width: 200px;
     height: auto;
     padding: 10px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.8);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -87,4 +87,35 @@ line.link.show {
     font-family: Futura;
     font-size: 16px;
     line-height: 20px;
+}
+
+
+.fr {
+    fill: #c83d32
+}
+.da {
+    fill: #62a1a9
+}
+
+.it{
+    fill: #99af5d
+
+}
+
+.la{
+    fill: #e6b740
+
+}
+
+.de{
+    fill: #2b595a
+
+/*https://www.color-hex.com/color-palette/67502*/
+
+}
+
+.en{
+    fill: pink
+
+
 }
