@@ -1,73 +1,66 @@
-
-var totalPage = 445;
-var numOfPageEveryRec = 1;
-var margin_left = 80;
-var margin_right = 10;
-var margin_bottom = 80;
-var padding_in_between = 2.2;
-
-var pageHeight = 40;
-var pageGroupWidth = (svgWidth) - margin_left - margin_right;
-var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
-
-var pageGroupY = svgHeight - pageHeight - margin_bottom;
-
-var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
-
-
-
 var pageContext = svg.append("g")
-                    .attr('class','pageContext')
-                    .attr("transform", "translate(" + margin_left + "," +  pageGroupY + ")");
+    .attr('class', 'pageContext')
+    .attr("transform", "translate(" + margin_left + "," + pageGroupY + ")");
 
 var pageXConverter;
 
+var pages;
+var pageGroup;
+var brush;
+var gBrush;
 
 
-function drawPages(){
+
+
+
+function drawPages() {
     // 1.1 conver page to x value based on svgWidth
     pageXConverter = d3.scaleLinear()
-                            .domain([0, totalPage])
-                            .range([0, pageGroupWidth]);
+        .domain([0, totalPage])
+        .range([0, pageGroupWidth]);
 
 
     // 1.2 Create the group for pages and keep the margin
 
-    var pageGroup = pageContext.append("g")
-                                .attr('class','pageGroup')
+    pageGroup = pageContext.append("g")
+        .attr('class', 'pageGroup')
 
 
 
     // 1.3 create the pages
-    pageGroup.selectAll('.page')
-                .data(pageData)
-                .enter()
-                .append('rect')
-                .attr('class', 'page')
-                .attr('width', pageWidth)
-                .attr('height', pageHeight)
-                .attr('x', (d,i) => pageXConverter(i * numOfPageEveryRec))
-                .style('fill', 'orange')
+    pages = pageGroup.selectAll('.page')
+        .data(pageData)
+        .enter()
+        .append('rect')
+        .attr('class', 'page')
+        .attr('width', pageWidth)
+        .attr('height', pageHeight)
+        .attr('x', (d, i) => pageXConverter(i * numOfPageEveryRec))
+        .style('fill', 'black')
 }
 
 
 
 
+// drawPages();
+
 
 // 2 brush on pages
-var brush = d3.brushX()
-    .extent([[0, 0], [pageGroupWidth, pageHeight]])
-    .on("brush end", brushed);
+brush = d3.brushX()
+    .extent([
+        [0, 0],
+        [pageGroupWidth, pageHeight]
+    ])
+    .on("start brush end", brushed);
 
 var brushXConverter = d3.scaleLinear()
-                        .domain([0, totalPage])
-                        .range([0, pageGroupWidth]);
+    .domain([0, totalPage])
+    .range([0, pageGroupWidth]);
 
 
-var gBrush = pageContext.append("g")
-                          .attr("class", "brush")
-                          .call(brush)
-                          // .call(brush.move, pageXConverter.range());
+gBrush = pageContext.append("g")
+    .attr("class", "brush")
+    // .call(brush)
 
 
 var brushResizePath = function(d) {
@@ -79,35 +72,45 @@ var brushResizePath = function(d) {
 
 
 var handle = gBrush.selectAll(".handle--custom")
-                    .data([{type: "w"}, {type: "e"}])
-                    .enter().append("path")
-                    .attr("class", "handle--custom")
-                    .attr("stroke", "#000")
-                    .attr("fill", "rgba(0,0,0,0.1)")
-                    .attr("cursor", "ew-resize")
-                    .attr("display", "none")
-                    .attr("d", brushResizePath);
+    .data([{ type: "w" }, { type: "e" }])
+    .enter().append("path")
+    .attr("class", "handle--custom")
+    .attr("stroke", "#000")
+    .attr("fill", "rgba(0,0,0,0.1)")
+    .attr("cursor", "ew-resize")
+    .attr("display", "none")
+    .attr("d", brushResizePath);
 
-gBrush.call(brush.move, pageXConverter.range());
 
-// function brushmoved() {
-//   var s = d3.event.selection;
 
-// }
+// gBrush.call(brush.move, [0, pageGroupWidth]);
+
+
+
 
 function brushed() {
-    var s = d3.event.selection || brushXConverter.range();
     var s = d3.event.selection;
 
-    if (s[1] == 0) {
-      handle.attr("display", "none");
-      // circle.classed("active", false);
+    console.log(s)
+    console.log(pageGroupWidth)
+
+    if (!s) {
+        handle.attr("display", "none");
     } else {
-      // circle.classed("active", function(d) { return s[0] <= d && d <= s[1]; });
-      handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [ s[i], - pageHeight / 4] + ")"; });
+        console.log('come to here')
+        console.log(scatters)
+        var brushedStartPage = Math.floor(s[0] * totalPage / pageGroupWidth);
+        var brushedEndPage = Math.floor(s[1] * totalPage / pageGroupWidth);
+
+        pages.classed("active", function(d) { return brushedStartPage <= d && d <= brushedEndPage; });
+        handle.attr("display", null).attr("transform", function(d, i) { return "translate(" + [s[i], -pageHeight / 4] + ")"; });
+
+        //highlight the circles accordingly
+        scatters.classed('selected', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
+
+        links.classed('show', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
     }
 
-    var brushedStartPage = Math.floor(s[0] * totalPage/pageGroupWidth);
-    var brushedEndPage = Math.floor(s[1] * totalPage/pageGroupWidth);
-    console.log(brushedEndPage)
+
+    // console.log(brushedEndPage)
 }

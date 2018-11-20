@@ -1,35 +1,121 @@
 body {
-    background-color: powderblue;
+    background-color: white;
 }
+
 h1 {
     color: blue;
 }
+
 p {
     color: rgb(103, 103, 253);
 }
 
 h3 {
-  color: darkblue;
-  font-size: 24px;
+    color: darkblue;
+    font-size: 24px;
 }
 
-<<<<<<< HEAD
+.handle--custom {
+    z-index: 1;
+}
 
-.handle--custom{
-  z-index: 1;
-}
-=======
-.chart {
-}
 .main text {
-    font: 10px sans-serif;	
+    font: 10px sans-serif;
 }
-.axis line, .axis path {
+
+.axis line,
+.axis path {
     shape-rendering: crispEdges;
     stroke: black;
     fill: none;
 }
+
 circle {
     fill: steelblue;
 }
->>>>>>> combined
+
+rect.page {
+    stroke: none;
+}
+
+rect.page.active {
+    stroke: steelblue;
+    stroke-width: 1;
+}
+
+circle.reference {
+    opacity: 0.05;
+    stroke: none;
+}
+
+circle.reference.selected {
+    opacity: 0.75;
+    stroke: none;
+    stroke-width: 0;
+}
+
+line.link {
+    stroke-width: 0;
+}
+
+line.link.show {
+    stroke-width: 0.4;
+}
+
+#tooltip {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+
+/*
+    Styles P
+  */
+
+#tooltip p {
+    margin: 0;
+    font-family: Futura;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+
+.fr {
+    fill: #c83d32
+}
+.da {
+    fill: #62a1a9
+}
+
+.it{
+    fill: #99af5d
+
+}
+
+.la{
+    fill: #e6b740
+
+}
+
+.de{
+    fill: #2b595a
+
+/*https://www.color-hex.com/color-palette/67502*/
+
+}
+
+.en{
+    fill: pink
+
+
+}

@@ -10,10 +10,14 @@
 
     <body>
 
-        <h3>Derrida!</h3>
+        <h3>Derrida's <br><i>Sources</i></h3></h3>
         <!-- <ul> </ul> -->
         <svg></svg>
-        <div></div>
+        <div id="tooltip" class="hidden">
+        </div>
+
+        <div id="maplegend" class="maplegend">
+        </div>
 
         <script>
             //  Set some other Parameters that are needed in more than one js files
@@ -21,31 +25,42 @@
                 var svgWidth = $(window).width() - 30;
                 var svgHeight = $(window).height() - 90;
 
+                var totalPage = 445;
+                var numOfPageEveryRec = 1;
+                var margin_left = 80;
+                var margin_right = 10;
+                var margin_bottom = 80;
+                var padding_in_between = 2.2;
+
+                var pageHeight = 40;
+                var pageGroupWidth = (svgWidth) - margin_left - margin_right;
+                var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
+
+                var pageGroupY = svgHeight - pageHeight - margin_bottom;
+
+                var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
+
 
             //set svg
                 svg.attr('width',svgWidth)
                     .attr('height',svgHeight)
-                    .style('background', '#00D9E8');
+                    .style('background', '#ffffff');
 
-            // make use of csv data,
-                d3.csv("data/data.csv", function(data) {
-                    console.log(data);
-                    var derrida_data = data;
-
-                    drawPages();
-
-                });
+            // The DATA is now made use of in "scripts/scatterChart.js"
+                // make use of csv data,
+                    // d3.csv("data/data.csv", function(data) {
+                    //     console.log(data);
+                    //     var derrida_data = data;
+                    //
+                    //     drawPages();
+                    //
+                    // });
 
 
 
         </script>
         <script src='scripts/basicGeometries.js'></script>
-<<<<<<< HEAD
-        <script src='scripts/scatterChart.js'></script>
-=======
-        <svg></svg>
         <script type="text/javascript" src="scripts/scatterChart.js"></script>
->>>>>>> combined
 
     </body>
 
