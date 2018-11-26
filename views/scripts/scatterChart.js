@@ -76,6 +76,14 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
+    svg.append("text")             
+        .attr("transform",
+            "translate(" + (width/2) + " ," + 
+            (height + margin.top + 100) + ")")
+        .style("text-anchor", "end")
+        .text("Page of Reference");        
+
+
     // Create the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
@@ -91,10 +99,18 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 100 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "end")
+        .text("Date of reference"); 
+
     var gLinks = main
         .append('g')
-            .attr('class', 'link')
-                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+        .attr('class', 'link')
+        // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
     var g = main.append("svg:g");
 
