@@ -269,7 +269,7 @@ d3.csv("data/combined.csv", function(data) {
 
                     .attr("cy", function (d) { return y(d.dateLog); } )
                     .attr("r", 8)
-                    // .style("fill", function(d) { return color(cValue(d));})
+                    // .style("fill", function(d) { return d.language;})
 
 
                 .on("mouseover", function(d) {
