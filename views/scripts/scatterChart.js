@@ -211,9 +211,9 @@ d3.csv("data/combined.csv", function(data) {
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*30)})
+            .attr("y", function(d,i) { return(i*25 + 30)})
             .attr("width","40px")
-            .attr("height","40px")
+            .attr("height","35px")
 
             // .attr("fill", function(d) { return cValue(data)})
 
@@ -224,11 +224,20 @@ d3.csv("data/combined.csv", function(data) {
 
     legend.append("text")
                 // .attr("class", "legText")
-                .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
+                .text(function(d, i) { return d.language ; })
                 // .text("class", function(d) {return (d.language)})
                 .attr("x", 45)
-                .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
+                .attr("y", function(d, i) { return (25 * i) + 20; })
+                // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
+
+    legend.append("text")             
+        // .attr("transform",
+        //     "translate(" + (width/2) + " ," + 
+        //     (height + margin.top) + ")")
+        .style("text-anchor", "start")
+        .text("Language")
+        .attr("y",20);    
 
 //  ###############################################################
 // commented out on friday noc
