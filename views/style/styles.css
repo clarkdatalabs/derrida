@@ -97,35 +97,36 @@ line.link.show {
 .fr {
     fill: #c83d32
 }
+
+
 .da {
     fill: #62a1a9
 }
+
 
 .it{
     fill: #99af5d
     /*fill: black;*/
     /*works*/
-
 }
 
 .la{
     /*fill: black;*/
-    fill: #e6b740;
+    /*fill: #FFFF00  ;*/
+    fill: #fada5e
     /*works*/
-
-
 }
+
 
 .de{
     fill: #2b595a;
 /*https://www.color-hex.com/color-palette/67502*/
 /*works!*/
-
 }
 
+
+
 .en{
-    fill: pink
+    fill: #FF8C00
     /*works!*/
-
-
 }
