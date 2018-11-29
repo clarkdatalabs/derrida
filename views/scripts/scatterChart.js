@@ -208,12 +208,14 @@ d3.csv("data/combined.csv", function(data) {
             .data(language_data)
             .enter()
             .append("g")
+            .attr("width","40px")
+            .attr("height","35px")
             // .attr("class","leg")
 
     legend.append("rect")
             .attr("y", function(d,i) { return(i*25 + 30)})
-            .attr("width","40px")
-            .attr("height","35px")
+            .attr("width","10px")
+            .attr("height","800px")
 
             // .attr("fill", function(d) { return cValue(data)})
 
@@ -272,6 +274,9 @@ d3.csv("data/combined.csv", function(data) {
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
+                // .attr("cx", 30)
+                // .attr("cy", 30)
+                // .attr("r", 20);
                     .attr('class', function(d) {return 'reference ' + d.language})
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
@@ -288,9 +293,7 @@ d3.csv("data/combined.csv", function(data) {
                         .style("opacity", 200);
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date +
-                        "<br/>Reference Type: " +
-                        d.ref_type)
+                        "<br/>Publication Year: " + d.date)
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px")
                     })

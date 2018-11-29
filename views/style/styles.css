@@ -97,8 +97,6 @@ line.link.show {
 .fr {
     fill: #c83d32
 }
-
-
 .da {
     fill: #62a1a9
 }
@@ -128,5 +126,6 @@ line.link.show {
 
 .en{
     fill: #FF8C00
+    
     /*works!*/
 }
