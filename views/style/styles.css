@@ -4,6 +4,7 @@ body {
 
 h1 {
     color: blue;
+    size: 
 }
 
 p {
@@ -62,6 +63,9 @@ line.link.show {
     stroke-width: 0.4;
 }
 
+
+
+
 #tooltip {
     position: absolute;
     width: 200px;
@@ -91,31 +95,39 @@ line.link.show {
 
 
 .fr {
-    fill: #c83d32
+    fill: #00008b;
+    /**/
 }
 .da {
-    fill: #62a1a9
+    /*fill: #62a1a9*/
+    fill: #c83d32
 }
+
 
 .it{
     fill: #99af5d
-
+    /*fill: black;*/
+    /*works*/
 }
 
 .la{
-    fill: #e6b740
-
+    /*fill: black;*/
+    /*fill: #FFFF00  ;*/
+    fill: #fada5e
+    /*works*/
 }
+
 
 .de{
-    fill: #2b595a
-
+    fill: #2b595a;
 /*https://www.color-hex.com/color-palette/67502*/
-
+/*works!*/
 }
 
+
+
 .en{
-    fill: pink
-
-
+    fill: #FF8C00
+    
+    /*works!*/
 }

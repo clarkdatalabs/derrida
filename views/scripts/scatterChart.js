@@ -76,6 +76,14 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
+    svg.append("text")             
+        .attr("transform",
+            "translate(" + (width/2) + " ," + 
+            (height + margin.top + 100) + ")")
+        .style("text-anchor", "end")
+        .text("Page of Reference");        
+
+
     // Create the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
@@ -91,10 +99,18 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 100 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "end")
+        .text("Date of reference"); 
+
     var gLinks = main
         .append('g')
-            .attr('class', 'link')
-                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+        .attr('class', 'link')
+        // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
     var g = main.append("svg:g");
 
@@ -174,10 +190,12 @@ d3.csv("data/combined.csv", function(data) {
     var legendSVG = d3.select("#maplegend")
             .append("svg")
             .attr("width", width)
+            .attr("height", 200)
+            
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
-
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
         [{language:"fr"},
@@ -192,27 +210,38 @@ d3.csv("data/combined.csv", function(data) {
             .data(language_data)
             .enter()
             .append("g")
+            .attr("width","40px")
+            .attr("height","45px")
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*30)})
-            .attr("width","40px")
-            .attr("height","40px")
+            .attr("y", function(d,i) { return(i*25 + 30)})
+            .attr("width","10px")
+            .attr("height","25px")
 
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
             .attr("stroke","#7f7f7f")
-            .attr("stroke-width","0.5");
+            .attr("stroke-width","0.2");
             // color = d3.scaleOrdinal(d3.schemeCategory10);
 
     legend.append("text")
                 // .attr("class", "legText")
-                .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
+                .text(function(d, i) { return d.language ; })
                 // .text("class", function(d) {return (d.language)})
-                .attr("x", 45)
-                .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
+                .attr("x", 20)
+                .attr("y", function(d, i) { return (25 * i) + 45; })
+                // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
+
+    legend.append("text")             
+        // .attr("transform",
+        //     "translate(" + (width/2) + " ," + 
+        //     (height + margin.top) + ")")
+        .style("text-anchor", "start")
+        .text("Language")
+        .attr("y",20);    
 
 //  ###############################################################
 // commented out on friday noc
@@ -247,13 +276,16 @@ d3.csv("data/combined.csv", function(data) {
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
+                // .attr("cx", 30)
+                // .attr("cy", 30)
+                // .attr("r", 20);
                     .attr('class', function(d) {return 'reference ' + d.language})
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
                     .attr("cy", function (d) { return y(d.dateLog); } )
                     .attr("r", 8)
-                    // .style("fill", function(d) { return color(cValue(d));})
+                    // .style("fill", function(d) { return d.language;})
 
 
                 .on("mouseover", function(d) {
@@ -263,16 +295,13 @@ d3.csv("data/combined.csv", function(data) {
                         .style("opacity", 200);
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date +
-                        "<br/>Reference Type: " +
-                        d.ref_type)
+                        "<br/>Publication Year: " + d.date)
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px")
                     })
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
-                        .style("opacity", 0);
                 });
 
     //Add the links
