@@ -74,7 +74,9 @@ d3.csv("data/combined.csv", function(data) {
         .attr("transform",
             "translate(" + (width/2) + " ," + 
             (height + margin.top + 100) + ")")
+
         .style("text-anchor", "start")
+
         .text("Page of Reference");        
 
 
@@ -172,10 +174,21 @@ d3.csv("data/combined.csv", function(data) {
         .text("Language")
         .attr("y",20);    
 
+    legend.append("text")             
+        // .attr("transform",
+        //     "translate(" + (width/2) + " ," + 
+        //     (height + margin.top) + ")")
+        .style("text-anchor", "start")
+        .text("Language")
+        .attr("y",20);    
+
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
+                // .attr("cx", 30)
+                // .attr("cy", 30)
+                // .attr("r", 20);
                     .attr('class', function(d) {return 'reference ' + d.language})
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
@@ -215,6 +228,7 @@ d3.csv("data/combined.csv", function(data) {
                     div.transition()
                         .duration(500)
 
+
                         .style("opacity", 0);
                     d3.select(this) // Get smaller after hover
                         .transition()
@@ -239,6 +253,7 @@ d3.csv("data/combined.csv", function(data) {
                     d3.select(this)
                         .transition()
                         .attr('r', 20);
+
                 });
 
     //Add the links
