@@ -258,7 +258,7 @@ d3.csv("data/dataNode.csv", function(data) {
                     .data(data)
                     .enter().append('line')
 
-                        .attr('class',function(d) { return 'link node ' + d.id})
+                        .attr('class',function(d) { return 'link node' + d.id})
                         .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
                         .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
                         .attr('x2', function (d) { return brushXConverter(d.page); })
