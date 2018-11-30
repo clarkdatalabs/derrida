@@ -7,7 +7,7 @@ var links;
 var y;
 
 
-d3.csv("data/combined.csv", function(data) {
+d3.csv("data/dataNode.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(error,d) {
         //if (error) throw error;
@@ -33,12 +33,6 @@ d3.csv("data/combined.csv", function(data) {
             d.page = +d.page;
         }
     });
-
-    var minX = 0;
-    var maxX = 445;
-
-    var minY = d3.min(data, function(d) { return d.dateLog });
-    var maxY = d3.max(data, function(d) { return d.dateLog });
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -190,6 +184,7 @@ d3.csv("data/combined.csv", function(data) {
         .text("Language")
         .attr("y",20);    
 
+        
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
                 .data(data)
@@ -197,15 +192,19 @@ d3.csv("data/combined.csv", function(data) {
                 // .attr("cx", 30)
                 // .attr("cy", 30)
                 // .attr("r", 20);
-                .attr('class', function(d) {return 'reference ' + d.language})
-                // .attr("cx", function (d) { return brushXConverter(d.page); } )
-                .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
-                .attr("cy", function (d) { return y(d.dateLog); } )
-                .attr("r", 4)
+
+                    .attr('class', function(d) {return 'reference ' + d.language})
+                    // .attr("cx", function (d) { return brushXConverter(d.page); } )
+                    .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+
+                    .attr("cy", function (d) { return y(d.dateLog); } )
+                    .attr("r", 5)
                     // .style("fill", function(d) { return d.language;})
 
 
                 .on("mouseover", function(d) {
+                    
+
                     div.transition()
                         .duration(200)
                         //.style("opacity", .9);
@@ -216,30 +215,22 @@ d3.csv("data/combined.csv", function(data) {
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                     d3.select(this) // Get bigger on hover
-                        .transition()
-                        .duration(100)
-                        .attr('r', 20);
-                        links.classed('highlighted',true); //turns on links highlight with CSS
-                    /*d3.selectAll('line') //highlights lines with d3
-                        .data(data)
-                        .attr('class', 'link show')
-                        //.attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                        //.attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
-                        //.attr('x2', function (d) { return brushXConverter(d.page); })
-                        //.attr('y2', (d) => height)
-                        .attr('stroke','#66cf2b') */
-                    }
-                    
-                    )
+                        //.transition()
+                        //.duration(100)
+                        .attr('r', 10);
+                        //links.classed('highlighted',true); //turns on links highlight with CSS
+                    //d3.selectAll('line') //highlights lines with d3
+                    //   .attr('class', function(d) {return 'node' + d.id})
+                    })
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
                         .style("opacity", 0);
 
                     d3.select(this) // Get smaller after hover
-                        .transition()
-                        .duration(100)
-                        .attr('r', 8);
+                        //.transition()
+                        //.duration(100)
+                        .attr('r', 5);
 
                     /*
                     d3.select('line') //Unhighlight lines with d3
@@ -251,7 +242,7 @@ d3.csv("data/combined.csv", function(data) {
                         //.attr('y2', (d) => height)
                         .attr('stroke','#ccc'); */
         
-                    links.classed('highlighted',false); // Turns off links highlight with CSS
+                    //links.classed('highlighted',false); // Turns off links highlight with CSS
                 })
                 //For debugging purposes
                 .on('click', function(d, i) {
@@ -266,7 +257,8 @@ d3.csv("data/combined.csv", function(data) {
     links = gLinks.selectAll('.link')
                     .data(data)
                     .enter().append('line')
-                        .attr('class', 'link')
+
+                        .attr('class',function(d) { return 'link node' + d.id})
                         .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
                         .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
                         .attr('x2', function (d) { return brushXConverter(d.page); })
