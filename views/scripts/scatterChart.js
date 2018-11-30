@@ -76,12 +76,12 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
-    svg.append("text")             
+    svg.append("text")
         .attr("transform",
-            "translate(" + (width/2) + " ," + 
+            "translate(" + (width/2) + " ," +
             (height + margin.top + 100) + ")")
         .style("text-anchor", "end")
-        .text("Page of Reference");        
+        .text("Page of Reference");
 
 
     // Create the y axis
@@ -105,7 +105,7 @@ d3.csv("data/combined.csv", function(data) {
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
-        .text("Date of reference"); 
+        .text("Date of reference");
 
     var gLinks = main
         .append('g')
@@ -191,10 +191,10 @@ d3.csv("data/combined.csv", function(data) {
             .append("svg")
             .attr("width", width)
             .attr("height", 200)
-            
+
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)",
             "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
@@ -235,13 +235,13 @@ d3.csv("data/combined.csv", function(data) {
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
-    legend.append("text")             
+    legend.append("text")
         // .attr("transform",
-        //     "translate(" + (width/2) + " ," + 
+        //     "translate(" + (width/2) + " ," +
         //     (height + margin.top) + ")")
         .style("text-anchor", "start")
         .text("Language")
-        .attr("y",20);    
+        .attr("y",20);
 
 //  ###############################################################
 // commented out on friday noc
@@ -318,6 +318,4 @@ d3.csv("data/combined.csv", function(data) {
 
 
     drawPages();
-    gBrush.call(brush);
-    gBrush.call(brush.move, [0, pageGroupWidth]);
 });
