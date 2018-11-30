@@ -36,7 +36,12 @@ h3 {
 }
 
 circle {
-    fill: steelblue;
+    fill: steelblue
+}
+
+.maplegend svg{
+    display: inline;
+
 }
 
 rect.page {
@@ -108,51 +113,24 @@ line.link.highlighted{
 
 
 .fr {
-
     fill: #1C5696;
-
-    /**/
 }
 .da {
-    /*fill: #62a1a9*/
-
     fill: #05badd
-
 }
 
-
 .it{
-
     fill: #ffb404
-
-    /*fill: black;*/
-    /*works*/
 }
 
 .la{
-    /*fill: black;*/
-    /*fill: #FFFF00  ;*/
-
     fill: #ff3902
-
-    /*works*/
 }
-
 
 .de{
-
     fill: #99d594;
-
-/*https://www.color-hex.com/color-palette/67502*/
-/*works!*/
 }
 
-
-
 .en{
-
     fill: #ff8007
-
-    
-    /*works!*/
 }

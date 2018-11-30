@@ -41,20 +41,23 @@
                 var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
 
 
+                var pageXConverter = d3.scaleLinear()
+                    .domain([0, totalPage])
+                    .range([0, pageGroupWidth]);
+
+                var brushXConverter = d3.scaleLinear()
+                    .domain([0, totalPage])
+                    .range([0, pageGroupWidth]);
+
+
+
+
             //set svg
                 svg.attr('width',svgWidth)
                     .attr('height',svgHeight)
                     .style('background', '#ffffff');
 
-            // The DATA is now made use of in "scripts/scatterChart.js"
-                // make use of csv data,
-                    // d3.csv("data/data.csv", function(data) {
-                    //     console.log(data);
-                    //     var derrida_data = data;
-                    //
-                    //     drawPages();
-                    //
-                    // });
+
 
 
 
