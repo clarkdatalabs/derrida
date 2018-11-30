@@ -197,12 +197,11 @@ d3.csv("data/combined.csv", function(data) {
                 // .attr("cx", 30)
                 // .attr("cy", 30)
                 // .attr("r", 20);
-                    .attr('class', function(d) {return 'reference ' + d.language})
-                    // .attr("cx", function (d) { return brushXConverter(d.page); } )
-                    .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
-
-                    .attr("cy", function (d) { return y(d.dateLog); } )
-                    .attr("r", 8)
+                .attr('class', function(d) {return 'reference ' + d.language})
+                // .attr("cx", function (d) { return brushXConverter(d.page); } )
+                .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+                .attr("cy", function (d) { return y(d.dateLog); } )
+                .attr("r", 2)
                     // .style("fill", function(d) { return d.language;})
 
 
@@ -235,9 +234,8 @@ d3.csv("data/combined.csv", function(data) {
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
-
-
                         .style("opacity", 0);
+
                     d3.select(this) // Get smaller after hover
                         .transition()
                         .duration(100)
