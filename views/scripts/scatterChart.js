@@ -20,7 +20,8 @@ d3.csv("data/dataNode.csv", function(data) {
             d.dateLog = 0;
         }
         else{
-            console.log(Math.log(+d.date))
+            number = +d.date
+            console.log(Math.log(number))
             d.date = +d.date;
             d.dateLog = +d.dateLog;
             //d.PublicationYear = +d.PublicationYear;
