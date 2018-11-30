@@ -31,6 +31,7 @@ function drawPages() {
                         .enter()
                         .append('rect')
                         .attr('class', 'page')
+                        .attr('id', (d, i) =>  "page" + (i).toString())
                         .attr('width', pageWidth)
                         .attr('height', pageHeight)
                         .attr('x', (d, i) => pageXConverter(i * numOfPageEveryRec))
@@ -104,6 +105,6 @@ function highlighted(points2highlight) {
 
     var brushedStartPage = Math.floor(s[0] * totalPage / pageGroupWidth);
     var brushedEndPage = Math.floor(s[1] * totalPage / pageGroupWidth);
-    
+
     links.classed('highlighted', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
 } */
