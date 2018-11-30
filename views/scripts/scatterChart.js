@@ -34,12 +34,6 @@ d3.csv("data/combined.csv", function(data) {
         }
     });
 
-    var minX = 0;
-    var maxX = 445;
-
-    var minY = d3.min(data, function(d) { return d.dateLog });
-    var maxY = d3.max(data, function(d) { return d.dateLog });
-
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
     var height = pageGroupY - pageHeight/2;

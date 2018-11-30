@@ -71,6 +71,7 @@ line.link.show {
 line.link.highlighted{
     stroke: rgba(255, 187, 0, 0.849);
     stroke-width: 0.8;
+    opacity: 0.15;
 }
 
 
