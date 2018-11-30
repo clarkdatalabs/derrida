@@ -95,10 +95,12 @@ line.link.show {
 
 
 .fr {
-    fill: #c83d32
+    fill: #00008b;
+    /**/
 }
 .da {
-    fill: #62a1a9
+    /*fill: #62a1a9*/
+    fill: #c83d32
 }
 
 
