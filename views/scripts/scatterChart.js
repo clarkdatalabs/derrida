@@ -80,7 +80,7 @@ d3.csv("data/combined.csv", function(data) {
         .attr("transform",
             "translate(" + (width/2) + " ," + 
             (height + margin.top + 100) + ")")
-        .style("text-anchor", "end")
+        .style("text-anchor", "start")
         .text("Page of Reference");        
 
 
@@ -189,9 +189,11 @@ d3.csv("data/combined.csv", function(data) {
 // append legend to page
     var legendSVG = d3.select("#maplegend")
             .append("svg")
+              .attr("transform","translate(500,0)")
+
             .attr("width", width)
             .attr("height", 200)
-            
+
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
         .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
