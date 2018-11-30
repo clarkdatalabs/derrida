@@ -191,10 +191,11 @@ d3.csv("data/combined.csv", function(data) {
             .append("svg")
             .attr("width", width)
             .attr("height", 200)
+            
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
-
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
         [{language:"fr"},
@@ -230,7 +231,7 @@ d3.csv("data/combined.csv", function(data) {
                 .text(function(d, i) { return d.language ; })
                 // .text("class", function(d) {return (d.language)})
                 .attr("x", 20)
-                .attr("y", function(d, i) { return (25 * i) + 22; })
+                .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
