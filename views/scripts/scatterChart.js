@@ -201,7 +201,7 @@ d3.csv("data/combined.csv", function(data) {
                 // .attr("cx", function (d) { return brushXConverter(d.page); } )
                 .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
                 .attr("cy", function (d) { return y(d.dateLog); } )
-                .attr("r", 2)
+                .attr("r", 4)
                     // .style("fill", function(d) { return d.language;})
 
 
