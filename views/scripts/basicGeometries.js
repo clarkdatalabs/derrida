@@ -5,6 +5,10 @@ var pageContext = svg.append("g")
 var pageXConverter;
 
 var pages;
+var pageGroup;
+var brush;
+var gBrush;
+
 
 
 
@@ -18,7 +22,7 @@ function drawPages() {
 
     // 1.2 Create the group for pages and keep the margin
 
-    var pageGroup = pageContext.append("g")
+    pageGroup = pageContext.append("g")
         .attr('class', 'pageGroup')
 
 
@@ -38,24 +42,25 @@ function drawPages() {
 
 
 
+// drawPages();
+
 
 // 2 brush on pages
-var brush = d3.brushX()
+brush = d3.brushX()
     .extent([
         [0, 0],
         [pageGroupWidth, pageHeight]
     ])
-    .on("brush end", brushed);
+    .on("start brush end", brushed);
 
 var brushXConverter = d3.scaleLinear()
     .domain([0, totalPage])
     .range([0, pageGroupWidth]);
 
 
-var gBrush = pageContext.append("g")
+gBrush = pageContext.append("g")
     .attr("class", "brush")
-    .call(brush)
-    // .call(brush.move, pageXConverter.range());
+    // .call(brush)
 
 
 var brushResizePath = function(d) {
@@ -76,15 +81,24 @@ var handle = gBrush.selectAll(".handle--custom")
     .attr("display", "none")
     .attr("d", brushResizePath);
 
-gBrush.call(brush.move);
+
+
+// gBrush.call(brush.move, [0, pageGroupWidth]);
+
+
 
 
 function brushed() {
     var s = d3.event.selection;
 
+    console.log(s)
+    console.log(pageGroupWidth)
+
     if (!s) {
         handle.attr("display", "none");
     } else {
+        console.log('come to here')
+        console.log(scatters)
         var brushedStartPage = Math.floor(s[0] * totalPage / pageGroupWidth);
         var brushedEndPage = Math.floor(s[1] * totalPage / pageGroupWidth);
 

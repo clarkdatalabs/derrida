@@ -25,6 +25,7 @@ d3.csv("data/combined.csv", function(data) {
             //d.PublicationYear = +d.PublicationYear;
         }
 
+
         if (d.page == 'NaN' || d.page == 'NA' ){
             d.page = 0;
         }
@@ -75,12 +76,20 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
+    svg.append("text")             
+        .attr("transform",
+            "translate(" + (width/2) + " ," + 
+            (height + margin.top + 100) + ")")
+        .style("text-anchor", "end")
+        .text("Page of Reference");        
+
+
     // Create the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(20)
         .tickFormat(function(d) {return 1970 - Math.floor(Math.pow(Math.exp(1), d));});
-    
+
     // Add y axis to canvas
     main.append('g')
     	.attr('transform', 'translate(0,0)')
@@ -90,17 +99,24 @@ d3.csv("data/combined.csv", function(data) {
         .attr('dy','.71em')
         .call(yAxis)
 
-    var gLinks = main
-                .append('g')
-                    .attr('class', 'link')
-                    // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 100 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "end")
+        .text("Date of reference"); 
 
-    
-    var g = main.append("svg:g"); 
-    
+    var gLinks = main
+        .append('g')
+        .attr('class', 'link')
+        // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
+
+    var g = main.append("svg:g");
+
     // Define the div for the tooltip
     var div = d3.select("#tooltip")  //gets attribute from index.html
-        .attr("class", "tooltip")               
+        .attr("class", "tooltip")
         .style("opacity", 0);
 
     // setup fill color
@@ -116,46 +132,120 @@ d3.csv("data/combined.csv", function(data) {
 //  https://github.com/d3/d3-selection
 //  https://gist.github.com/hrbrmstr/7700364
 //  https://bl.ocks.org/zanarmstrong/0b6276e033142ce95f7f374e20f1c1a7
-// 
+
+        // var svgLegned4 = d3.select(".legend")
+        //     .append("svg")
+        //     .attr("width", width)
+        //     .attr("height", height - 50)
+
+        // var dataL = 0;
+        // var offset = 80;
+
+        // var legend4 = svgLegned4.selectAll('.legend')
+        //     // .data(legendVals2)
+        //     .data()
+
+        //     .enter().append('g')
+        //     .attr("class", "legend")
+        //     .attr("transform", function (d, i) {
+        //      if (i === 0) {
+        //         dataL = d.length + offset
+        //         return "translate(0,0)"
+        //     } else {
+        //      var newdataL = dataL
+        //      dataL +=  d.length + offset
+        //      return "translate(" + (newdataL) + ",0)"
+        //     }
+        // })
+
+        // legend.append('rect')
+        //     .attr("x", 0)
+        //     .attr("y", 0)
+        //     .attr("width", 10)
+        //     .attr("height", 10)
+        //     .style("fill", function (d, i) {
+        //     return color(i)
+        // })
+
+        // legend.append('text')
+        //     .attr("x", 20)
+        //     .attr("y", 10)
+        // //.attr("dy", ".35em")
+        // .text(function (d, i) {
+        //     return d
+        // })
+        //     .attr("class", "textselected")
+        //     .style("text-anchor", "start")
+        //     .style("font-size", 15)
+
+
+// ###########################################################
+// commented out nobv 19 10:57am
+// this produced 5 black boxes that are labeled abcde
 
     // to be used for legend.append("text")
     var commasFormatter = d3.format(",")
 
-
 // append legend to page
     var legendSVG = d3.select("#maplegend")
-                    .append("svg") ;
-          
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 200)
+            
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
+
+    var language_data =
+        [{language:"fr"},
+        {language:"da"},
+        {language:"de"},
+        {language:"en"},
+        {language:"la"},
+        {language:"it"}];
 
 // build legend
     legend = legendSVG.selectAll(".lentry")
-            .data(data)
+            .data(language_data)
             .enter()
             .append("g")
-            .attr("class","leg") 
+            .attr("width","40px")
+            .attr("height","45px")
+            // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*40)})
-            .attr("width","40px")
-            .attr("height","40px")
+            .attr("y", function(d,i) { return(i*25 + 30)})
+            .attr("width","10px")
+            .attr("height","25px")
 
-            .attr("fill", function(d) { return cValue(data) ; })
+            // .attr("fill", function(d) { return cValue(data)})
+
+            .attr("class", function(d) {return (d.language)})
             .attr("stroke","#7f7f7f")
-            .attr("stroke-width","0.5");
+            .attr("stroke-width","0.2");
             // color = d3.scaleOrdinal(d3.schemeCategory10);
 
-            
     legend.append("text")
-                .attr("class", "legText")
-                // .text(function(d, i) { return "≤ "+commasFormatter(d.language[i]) ; })
-                .text(["a", "b", "c", "d", "e"])
-                .attr("x", 45)
-                .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
+                // .attr("class", "legText")
+                .text(function(d, i) { return d.language ; })
+                // .text("class", function(d) {return (d.language)})
+                .attr("x", 20)
+                .attr("y", function(d, i) { return (25 * i) + 45; })
+                // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
-     
+
+    legend.append("text")             
+        // .attr("transform",
+        //     "translate(" + (width/2) + " ," + 
+        //     (height + margin.top) + ")")
+        .style("text-anchor", "start")
+        .text("Language")
+        .attr("y",20);    
+
+//  ###############################################################
+// commented out on friday noc
+
     // var ordinal = d3.scaleOrdinal()
     //   .domain(d.language)
     //   .range(color);
@@ -186,30 +276,32 @@ d3.csv("data/combined.csv", function(data) {
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
-                    .attr('class', 'reference')
+                // .attr("cx", 30)
+                // .attr("cy", 30)
+                // .attr("r", 20);
+                    .attr('class', function(d) {return 'reference ' + d.language})
                     // .attr("cx", function (d) { return brushXConverter(d.page); } )
                     .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
                     .attr("cy", function (d) { return y(d.dateLog); } )
                     .attr("r", 8)
-                    .style("fill", function(d) { return color(cValue(d));})
+                    // .style("fill", function(d) { return d.language;})
+
+
                 .on("mouseover", function(d) {
-                    div.transition()     
-                        .duration(200)      
-                        //.style("opacity", .9);  
-                        .style("opacity", 200);     
+                    div.transition()
+                        .duration(200)
+                        //.style("opacity", .9);
+                        .style("opacity", 200);
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date + 
-                        "<br/>Reference Type: " + 
-                        d.ref_type)  
-                        .style("left", (d3.event.pageX) + "px")     
+                        "<br/>Publication Year: " + d.date)
+                        .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px")
                     })
-                .on("mouseout", function(d) {     
-                    div.transition()        
-                        .duration(500)   
-                        .style("opacity", 0);   
+                .on("mouseout", function(d) {
+                    div.transition()
+                        .duration(500)
                 });
 
     //Add the links
@@ -223,4 +315,9 @@ d3.csv("data/combined.csv", function(data) {
                     .attr('y2', (d) => height)
                     .attr('stroke-width', '0.4')
                     .attr('stroke','#CCC')
+
+
+    drawPages();
+    gBrush.call(brush);
+    gBrush.call(brush.move, [0, pageGroupWidth]);
 });
