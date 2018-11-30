@@ -34,7 +34,12 @@ h3 {
 }
 
 circle {
-    fill: steelblue;
+    fill: steelblue
+}
+
+.maplegend svg{
+    display: inline;
+
 }
 
 rect.page {

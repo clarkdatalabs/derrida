@@ -120,12 +120,12 @@ d3.csv("data/combined.csv", function(data) {
         .style("opacity", 0);
 
 // append legend to page
-    var legendSVG = d3.select("#maplegend")
-            .append("svg")
-              .attr("transform","translate(500,0)")
+    var legendSVG = d3.select("svg")
+            // .append("svg")
+            // .attr("transform","translate(500,0)")
 
-            .attr("width", width)
-            .attr("height", 200)
+            // .attr("width", width)
+            // .attr("height", 200)
 
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
@@ -133,12 +133,12 @@ d3.csv("data/combined.csv", function(data) {
             "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
-        [{language:"fr"},
-        {language:"da"},
-        {language:"de"},
-        {language:"en"},
-        {language:"la"},
-        {language:"it"}];
+        [{language:"fr",full:"French"},
+        {language:"da", full: "Danish"},
+        {language:"de", full: 'German'},
+        {language:"en", full: "English"},
+        {language:"la", full: 'Latin'},
+        {language:"it", full: 'Italian'}];
 
 // build legend
     legend = legendSVG.selectAll(".lentry")
@@ -150,10 +150,10 @@ d3.csv("data/combined.csv", function(data) {
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*25 + 30)})
-            .attr("width","10px")
-            .attr("height","25px")
-
+            .attr("y", 50)
+            .attr("width","20px")
+            .attr("height","20px")
+            .attr("x", function(d,i) { return(svgWidth- i*25)})
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
@@ -163,7 +163,7 @@ d3.csv("data/combined.csv", function(data) {
 
     legend.append("text")
                 // .attr("class", "legText")
-                .text(function(d, i) { return d.language ; })
+                .text(function(d, i) { return d.full ; })
                 // .text("class", function(d) {return (d.language)})
                 .attr("x", 20)
                 .attr("y", function(d, i) { return (25 * i) + 45; })
