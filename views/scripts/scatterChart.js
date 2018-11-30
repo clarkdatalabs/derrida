@@ -146,10 +146,10 @@ d3.csv("data/dataNode.csv", function(data) {
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", 20)
+            .attr("y", 40)
             .attr("width","10px")
             .attr("height","10px")
-            .attr("x", function(d,i) { return(svgWidth- i*50)})
+            .attr("x", function(d,i) { return(svgWidth- (i+1) *50)})
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
@@ -161,20 +161,12 @@ d3.csv("data/dataNode.csv", function(data) {
                 // .attr("class", "legText")
                 .text(function(d, i) { return d.full ; })
                 // .text("class", function(d) {return (d.language)})
-                .attr("y", 20)
-                .attr("x", function(d,i) { return(svgWidth- i*55)})
+                .attr("y", 30)
+                .attr("x", function(d,i) { return(svgWidth- (i+1) *55)})
 
                 // .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
-
-    // legend.append("text")             
-    //     // .attr("transform",
-    //     //     "translate(" + (width/2) + " ," + 
-    //     //     (height + margin.top) + ")")
-    //     .style("text-anchor", "start")
-    //     .text("Language")
-    //     .attr("y",20);    
 
     legend.append("text")             
         // .attr("transform",
@@ -182,7 +174,8 @@ d3.csv("data/dataNode.csv", function(data) {
         //     (height + margin.top) + ")")
         .style("text-anchor", "start")
         .text("Language")
-        .attr("y",20);    
+        .attr("x", svgWidth - 200)    
+        .attr("y",10);    
 
         
     // Add the scatterplot
@@ -193,18 +186,15 @@ d3.csv("data/dataNode.csv", function(data) {
                 // .attr("cy", 30)
                 // .attr("r", 20);
 
-                    .attr('class', function(d) {return 'reference ' + d.language})
-                    // .attr("cx", function (d) { return brushXConverter(d.page); } )
-                    .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+                .attr('class', function(d) {return 'reference ' + d.language})
+                // .attr("cx", function (d) { return brushXConverter(d.page); } )
+                .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
-                    .attr("cy", function (d) { return y(d.dateLog); } )
-                    .attr("r", 5)
-                    // .style("fill", function(d) { return d.language;})
-
-
+                .attr("cy", function (d) { return y(d.dateLog); } )
+                .attr("r", 5)
+                // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
                     
-
                     div.transition()
                         .duration(200)
                         //.style("opacity", .9);
