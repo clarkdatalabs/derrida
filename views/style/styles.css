@@ -6,7 +6,7 @@ h1 {
     color: blue;
 
     /*
-    size: 
+    size:
     */
 
 }
@@ -53,6 +53,10 @@ rect.page.active {
     stroke-width: 1;
 }
 
+rect.page.active.highlighted {
+    stroke: rgba(255, 187, 0, 0.849);
+}
+
 circle.reference {
     opacity: 0.05;
     stroke: none;
@@ -70,6 +74,17 @@ line.link {
 
 line.link.show {
     stroke-width: 0.4;
+}
+
+/* line.link.highlighted {
+    stroke-width: 1;
+    stroke: rgba(255, 187, 0, 0.4);
+} */
+
+line.link.show.highlighted {
+    stroke-width: 1.2;
+    stroke: rgba(255, 187, 0, 1);
+    opacity: 0.8;
 }
 
 

@@ -213,11 +213,7 @@ d3.csv("data/dataNode.csv", function(data) {
                         .attr('r', 10);
                         //links.classed('highlighted',true); //turns on links highlight with CSS
                     lineClassName = '.' + 'node' + d.id;
-                    d3.selectAll(lineClassName) //highlights lines with d3
-                        //.attr('class', function(d) {return 'node' + d.id})
-                        .style('stroke','rgba(255, 187, 0, 0.849)')
-                        .style('stroke-width','1')
-                        // .style('opacity', '2')
+                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
 
 
                     let referenceTitle = d.bookTitle;
@@ -229,7 +225,7 @@ d3.csv("data/dataNode.csv", function(data) {
                     })
                     pageNumIds.forEach((pageId) => {
                         d3.select(pageId)
-                            .style('stroke','rgba(255, 187, 0, 0.849)')
+                            .classed('highlighted',true)
                     })
                   })
 
@@ -242,14 +238,11 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.transition()
                         //.duration(100)
                         .attr('r', 5);
-                    d3.selectAll(lineClassName) //highlights lines with d3
-                        //.attr('class', function(d) {return 'node' + d.id})
-                        .style('stroke','#CCC')
-                        .style('stroke-width','0.5')
+                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
 
                     pageNumIds.forEach((pageId) => {
                         d3.select(pageId)
-                            .style('stroke','steelblue')
+                            .classed('highlighted',false)
                     })
 
                     /*
