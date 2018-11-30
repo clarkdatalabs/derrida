@@ -4,7 +4,9 @@ body {
 
 h1 {
     color: blue;
+    /*
     size: 
+    */
 }
 
 p {
@@ -63,7 +65,13 @@ line.link.show {
     stroke-width: 0.4;
 }
 
-
+/*
+    Highlights
+*/
+line.link.highlighted{
+    stroke: rgba(255, 187, 0, 0.849);
+    stroke-width: 0.8;
+}
 
 
 #tooltip {
