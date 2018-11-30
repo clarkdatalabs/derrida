@@ -194,7 +194,7 @@ d3.csv("data/dataNode.csv", function(data) {
                 .attr("r", 5)
                 // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
-                    
+
                     div.transition()
                         .duration(200)
                         //.style("opacity", .9);
@@ -209,8 +209,12 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.duration(100)
                         .attr('r', 10);
                         //links.classed('highlighted',true); //turns on links highlight with CSS
-                    //d3.selectAll('line') //highlights lines with d3
-                    //   .attr('class', function(d) {return 'node' + d.id})
+                    let lineClassName = '.' + 'node' + d.id;
+                    d3.selectAll(lineClassName) //highlights lines with d3
+                        //.attr('class', function(d) {return 'node' + d.id})
+                        .attr('stroke','rgba(255, 187, 0, 0.849')
+                        .attr('stroke-width','2')
+                        .attr('opacity', '2')
                     })
                 .on("mouseout", function(d) {
                     div.transition()
@@ -221,7 +225,11 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.transition()
                         //.duration(100)
                         .attr('r', 5);
-
+                    let lineClassName = '.' + 'node' + d.id;
+                    d3.selectAll(lineClassName) //highlights lines with d3
+                        //.attr('class', function(d) {return 'node' + d.id})
+                        .attr('stroke','#CCC')
+        
                     /*
                     d3.select('line') //Unhighlight lines with d3
                         .data(data)
@@ -237,9 +245,10 @@ d3.csv("data/dataNode.csv", function(data) {
                 //For debugging purposes
                 .on('click', function(d, i) {
                     console.log("You clicked", d), i;
+                    /*
                     d3.select(this)
                         .transition()
-                        .attr('r', 20);
+                        .attr('r', 20); */
 
                 });
 
