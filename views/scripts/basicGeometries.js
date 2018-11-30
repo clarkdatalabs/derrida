@@ -109,8 +109,20 @@ function brushed() {
         scatters.classed('selected', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
 
         links.classed('show', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
+
+        //highlighted()
     }
 
 
     // console.log(brushedEndPage)
 }
+
+/*
+function highlighted(points2highlight) {
+    var s = d3.event.selection;
+
+    var brushedStartPage = Math.floor(s[0] * totalPage / pageGroupWidth);
+    var brushedEndPage = Math.floor(s[1] * totalPage / pageGroupWidth);
+    
+    links.classed('highlighted', function(d) { return brushedStartPage <= d.page && d.page <= brushedEndPage; });
+} */
