@@ -3,12 +3,12 @@ body {
 }
 
 h1 {
-    color: blue;
+    color: darkblue;
     size: 
 }
 
 p {
-    color: rgb(103, 103, 253);
+    color: darkblue;
 }
 
 h3 {
@@ -95,17 +95,17 @@ line.link.show {
 
 
 .fr {
-    fill: #00008b;
+    fill: #3288bd;
     /**/
 }
 .da {
     /*fill: #62a1a9*/
-    fill: #c83d32
+    fill: #d53e4f
 }
 
 
 .it{
-    fill: #99af5d
+    fill: #fc8d59
     /*fill: black;*/
     /*works*/
 }
@@ -113,13 +113,13 @@ line.link.show {
 .la{
     /*fill: black;*/
     /*fill: #FFFF00  ;*/
-    fill: #fada5e
+    fill: #e6f598
     /*works*/
 }
 
 
 .de{
-    fill: #2b595a;
+    fill: #99d594;
 /*https://www.color-hex.com/color-palette/67502*/
 /*works!*/
 }
@@ -127,7 +127,7 @@ line.link.show {
 
 
 .en{
-    fill: #FF8C00
+    fill: #fee08b
     
     /*works!*/
 }
