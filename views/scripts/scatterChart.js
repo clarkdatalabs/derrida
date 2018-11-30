@@ -147,15 +147,15 @@ d3.csv("data/combined.csv", function(data) {
             .data(language_data)
             .enter()
             .append("g")
-            .attr("width","40px")
-            .attr("height","45px")
+            // .attr("width","80px")
+            // .attr("height","80px")
             // .attr("class","leg")
 
     legend.append("rect")
             .attr("y", 20)
             .attr("width","10px")
             .attr("height","10px")
-            .attr("x", function(d,i) { return(svgWidth- i*30)})
+            .attr("x", function(d,i) { return(svgWidth- i*50)})
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
@@ -168,7 +168,7 @@ d3.csv("data/combined.csv", function(data) {
                 .text(function(d, i) { return d.full ; })
                 // .text("class", function(d) {return (d.language)})
                 .attr("y", 20)
-                .attr("x", function(d,i) { return(svgWidth- i*50)})
+                .attr("x", function(d,i) { return(svgWidth- i*55)})
 
                 // .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
