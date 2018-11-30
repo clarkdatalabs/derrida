@@ -6,6 +6,9 @@ var links;
 
 var y;
 
+var lineClassName;
+var pageNumIds;
+
 
 d3.csv("data/dataNode.csv", function(data) {
     // Convert strings to numbers.
@@ -70,14 +73,14 @@ d3.csv("data/dataNode.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
-    svg.append("text")             
+    svg.append("text")
         .attr("transform",
-            "translate(" + (width/2) + " ," + 
+            "translate(" + (width/2) + " ," +
             (height + margin.top + 100) + ")")
 
         .style("text-anchor", "start")
 
-        .text("Page of Reference");        
+        .text("Page of Reference");
 
 
     // Create the y axis
@@ -101,7 +104,7 @@ d3.csv("data/dataNode.csv", function(data) {
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
-        .text("Date of reference"); 
+        .text("Date of reference");
 
     var gLinks = main
         .append('g')
@@ -125,7 +128,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)",
             "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
@@ -168,16 +171,16 @@ d3.csv("data/dataNode.csv", function(data) {
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
-    legend.append("text")             
+    legend.append("text")
         // .attr("transform",
-        //     "translate(" + (width/2) + " ," + 
+        //     "translate(" + (width/2) + " ," +
         //     (height + margin.top) + ")")
         .style("text-anchor", "start")
         .text("Language")
-        .attr("x", svgWidth - 200)    
-        .attr("y",10);    
+        .attr("x", svgWidth - 200)
+        .attr("y",10);
 
-        
+
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
                 .data(data)
@@ -209,13 +212,27 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.duration(100)
                         .attr('r', 10);
                         //links.classed('highlighted',true); //turns on links highlight with CSS
-                    let lineClassName = '.' + 'node' + d.id;
+                    lineClassName = '.' + 'node' + d.id;
                     d3.selectAll(lineClassName) //highlights lines with d3
                         //.attr('class', function(d) {return 'node' + d.id})
-                        .attr('stroke','rgba(255, 187, 0, 0.849')
-                        .attr('stroke-width','2')
-                        .attr('opacity', '2')
+                        .style('stroke','rgba(255, 187, 0, 0.849)')
+                        .style('stroke-width','1')
+                        // .style('opacity', '2')
+
+
+                    let referenceTitle = d.bookTitle;
+                    pageNumIds = [];
+                    data.forEach((thisData) => {
+                        if (thisData.bookTitle == referenceTitle){
+                            pageNumIds.push('#' + 'page' + thisData.page)
+                        }
                     })
+                    pageNumIds.forEach((pageId) => {
+                        d3.select(pageId)
+                            .style('stroke','rgba(255, 187, 0, 0.849)')
+                    })
+                  })
+
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
@@ -225,11 +242,16 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.transition()
                         //.duration(100)
                         .attr('r', 5);
-                    let lineClassName = '.' + 'node' + d.id;
                     d3.selectAll(lineClassName) //highlights lines with d3
                         //.attr('class', function(d) {return 'node' + d.id})
-                        .attr('stroke','#CCC')
-        
+                        .style('stroke','#CCC')
+                        .style('stroke-width','0.5')
+
+                    pageNumIds.forEach((pageId) => {
+                        d3.select(pageId)
+                            .style('stroke','steelblue')
+                    })
+
                     /*
                     d3.select('line') //Unhighlight lines with d3
                         .data(data)
@@ -239,7 +261,7 @@ d3.csv("data/dataNode.csv", function(data) {
                         //.attr('x2', function (d) { return brushXConverter(d.page); })
                         //.attr('y2', (d) => height)
                         .attr('stroke','#ccc'); */
-        
+
                     //links.classed('highlighted',false); // Turns off links highlight with CSS
                 })
                 //For debugging purposes
