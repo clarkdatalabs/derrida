@@ -95,17 +95,17 @@ line.link.show {
 
 
 .fr {
-    fill: #3288bd;
+    fill: #1C5696;
     /**/
 }
 .da {
     /*fill: #62a1a9*/
-    fill: #d53e4f
+    fill: #05badd
 }
 
 
 .it{
-    fill: #fc8d59
+    fill: #ffb404
     /*fill: black;*/
     /*works*/
 }
@@ -113,7 +113,7 @@ line.link.show {
 .la{
     /*fill: black;*/
     /*fill: #FFFF00  ;*/
-    fill: #e6f598
+    fill: #ff3902
     /*works*/
 }
 
@@ -127,7 +127,7 @@ line.link.show {
 
 
 .en{
-    fill: #fee08b
+    fill: #ff8007
     
     /*works!*/
 }
