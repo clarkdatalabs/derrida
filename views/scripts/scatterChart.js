@@ -80,7 +80,7 @@ d3.csv("data/combined.csv", function(data) {
         .attr("transform",
             "translate(" + (width/2) + " ," + 
             (height + margin.top + 100) + ")")
-        .style("text-anchor", "end")
+        .style("text-anchor", "start")
         .text("Page of Reference");        
 
 
@@ -122,11 +122,15 @@ d3.csv("data/combined.csv", function(data) {
 // append legend to page
     var legendSVG = d3.select("#maplegend")
             .append("svg")
+              .attr("transform","translate(500,0)")
+
             .attr("width", width)
+            .attr("height", 200)
+
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
-
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
         [{language:"fr"},
@@ -142,27 +146,27 @@ d3.csv("data/combined.csv", function(data) {
             .enter()
             .append("g")
             .attr("width","40px")
-            .attr("height","35px")
+            .attr("height","45px")
             // .attr("class","leg")
 
     legend.append("rect")
             .attr("y", function(d,i) { return(i*25 + 30)})
             .attr("width","10px")
-            .attr("height","800px")
+            .attr("height","25px")
 
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
             .attr("stroke","#7f7f7f")
-            .attr("stroke-width","0.5");
+            .attr("stroke-width","0.2");
             // color = d3.scaleOrdinal(d3.schemeCategory10);
 
     legend.append("text")
                 // .attr("class", "legText")
                 .text(function(d, i) { return d.language ; })
                 // .text("class", function(d) {return (d.language)})
-                .attr("x", 45)
-                .attr("y", function(d, i) { return (25 * i) + 20; })
+                .attr("x", 20)
+                .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
@@ -216,6 +220,7 @@ d3.csv("data/combined.csv", function(data) {
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
+
                         .style("opacity", 0);
                     d3.select(this) // Get smaller after hover
                         .transition()
