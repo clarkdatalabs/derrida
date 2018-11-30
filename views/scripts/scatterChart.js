@@ -220,7 +220,9 @@ d3.csv("data/dataNode.csv", function(data) {
                     let lineClassName = '.' + 'node' + d.id;
                     d3.selectAll(lineClassName) //highlights lines with d3
                         //.attr('class', function(d) {return 'node' + d.id})
-                        .attr('stroke','red')
+                        .attr('stroke','rgba(255, 187, 0, 0.849')
+                        .attr('stroke-width','2')
+                        .attr('opacity', '2')
                     })
                 .on("mouseout", function(d) {
                     div.transition()
