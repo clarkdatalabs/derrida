@@ -80,8 +80,10 @@ d3.csv("data/combined.csv", function(data) {
         .attr("transform",
             "translate(" + (width/2) + " ," +
             (height + margin.top + 100) + ")")
-        .style("text-anchor", "end")
-        .text("Page of Reference");
+        .style("text-anchor", "start")
+
+        .text("Page of Reference");        
+
 
 
     // Create the y axis
@@ -119,78 +121,13 @@ d3.csv("data/combined.csv", function(data) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    // setup fill color
-    var cValue = function(d) { return d.language;},
-        //color = d3.scale.category10(); #v2
-        color = d3.scaleOrdinal(d3.schemeCategory10);
-
-
-// ###############################################################
-// all this is what i started trying to do on friday, november 16
-
-// here are the sources:
-//  https://github.com/d3/d3-selection
-//  https://gist.github.com/hrbrmstr/7700364
-//  https://bl.ocks.org/zanarmstrong/0b6276e033142ce95f7f374e20f1c1a7
-
-        // var svgLegned4 = d3.select(".legend")
-        //     .append("svg")
-        //     .attr("width", width)
-        //     .attr("height", height - 50)
-
-        // var dataL = 0;
-        // var offset = 80;
-
-        // var legend4 = svgLegned4.selectAll('.legend')
-        //     // .data(legendVals2)
-        //     .data()
-
-        //     .enter().append('g')
-        //     .attr("class", "legend")
-        //     .attr("transform", function (d, i) {
-        //      if (i === 0) {
-        //         dataL = d.length + offset
-        //         return "translate(0,0)"
-        //     } else {
-        //      var newdataL = dataL
-        //      dataL +=  d.length + offset
-        //      return "translate(" + (newdataL) + ",0)"
-        //     }
-        // })
-
-        // legend.append('rect')
-        //     .attr("x", 0)
-        //     .attr("y", 0)
-        //     .attr("width", 10)
-        //     .attr("height", 10)
-        //     .style("fill", function (d, i) {
-        //     return color(i)
-        // })
-
-        // legend.append('text')
-        //     .attr("x", 20)
-        //     .attr("y", 10)
-        // //.attr("dy", ".35em")
-        // .text(function (d, i) {
-        //     return d
-        // })
-        //     .attr("class", "textselected")
-        //     .style("text-anchor", "start")
-        //     .style("font-size", 15)
-
-
-// ###########################################################
-// commented out nobv 19 10:57am
-// this produced 5 black boxes that are labeled abcde
-
-    // to be used for legend.append("text")
-    var commasFormatter = d3.format(",")
-
 // append legend to page
+
     var legendSVG = d3.select("#maplegend")
             .append("svg")
             .attr("width", width)
             .attr("height", 200)
+
 
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
@@ -198,27 +135,27 @@ d3.csv("data/combined.csv", function(data) {
             "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
-        [{language:"fr"},
-        {language:"da"},
-        {language:"de"},
-        {language:"en"},
-        {language:"la"},
-        {language:"it"}];
+        [{language:"fr",full:"French"},
+        {language:"da", full: "Danish"},
+        {language:"de", full: 'German'},
+        {language:"en", full: "English"},
+        {language:"la", full: 'Latin'},
+        {language:"it", full: 'Italian'}];
 
 // build legend
     legend = legendSVG.selectAll(".lentry")
             .data(language_data)
             .enter()
             .append("g")
-            .attr("width","40px")
-            .attr("height","45px")
+            // .attr("width","80px")
+            // .attr("height","80px")
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*25 + 30)})
+            .attr("y", 20)
             .attr("width","10px")
-            .attr("height","25px")
-
+            .attr("height","10px")
+            .attr("x", function(d,i) { return(svgWidth- i*50)})
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
@@ -228,10 +165,12 @@ d3.csv("data/combined.csv", function(data) {
 
     legend.append("text")
                 // .attr("class", "legText")
-                .text(function(d, i) { return d.language ; })
+                .text(function(d, i) { return d.full ; })
                 // .text("class", function(d) {return (d.language)})
-                .attr("x", 20)
-                .attr("y", function(d, i) { return (25 * i) + 45; })
+                .attr("y", 20)
+                .attr("x", function(d,i) { return(svgWidth- i*55)})
+
+                // .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
@@ -243,34 +182,13 @@ d3.csv("data/combined.csv", function(data) {
         .text("Language")
         .attr("y",20);
 
-//  ###############################################################
-// commented out on friday noc
-
-    // var ordinal = d3.scaleOrdinal()
-    //   .domain(d.language)
-    //   .range(color);
-
-    // var svg = d3.select("svg");
-
-    // svg.append("g")
-    //   .attr("class", "legendOrdinal")
-    //   .attr("transform", "translate(20,20)");
-
-    // var legendOrdinal = d3.legendColor()
-    //   //d3 symbol creates a path-string, for example
-    //   //"M0,-8.059274488676564L9.306048591020996,
-    //   //8.059274488676564 -9.306048591020996,8.059274488676564Z"
-    //   .shape("path", d3.symbol().type(d3.symbolTriangle).size(150)())
-    //   .shapePadding(10)
-    //   //use cellFilter to hide the "e" cell
-    //   .cellFilter(function(d){ return d.label !== "e" })
-    //   .scale(ordinal);
-
-    // svg.select(".legendOrdinal")
-    //   .call(legendOrdinal);
-// end of color legend
-//  ###############################################################
-
+    legend.append("text")             
+        // .attr("transform",
+        //     "translate(" + (width/2) + " ," + 
+        //     (height + margin.top) + ")")
+        .style("text-anchor", "start")
+        .text("Language")
+        .attr("y",20);    
 
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
@@ -297,25 +215,65 @@ d3.csv("data/combined.csv", function(data) {
                         "<br/>Author: " + d.author +
                         "<br/>Publication Year: " + d.date)
                         .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px")
-                    })
+                        .style("top", (d3.event.pageY - 28) + "px");
+                    d3.select(this) // Get bigger on hover
+                        .transition()
+                        .duration(100)
+                        .attr('r', 20);
+                        links.classed('highlighted',true); //turns on links highlight with CSS
+                    /*d3.selectAll('line') //highlights lines with d3
+                        .data(data)
+                        .attr('class', 'link show')
+                        //.attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
+                        //.attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
+                        //.attr('x2', function (d) { return brushXConverter(d.page); })
+                        //.attr('y2', (d) => height)
+                        .attr('stroke','#66cf2b') */
+                    }
+                    
+                    )
                 .on("mouseout", function(d) {
                     div.transition()
                         .duration(500)
+
+
+                        .style("opacity", 0);
+                    d3.select(this) // Get smaller after hover
+                        .transition()
+                        .duration(100)
+                        .attr('r', 8);
+
+                    /*
+                    d3.select('line') //Unhighlight lines with d3
+                        .data(data)
+                        .attr('class', 'link show')
+                        //.attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
+                        //.attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
+                        //.attr('x2', function (d) { return brushXConverter(d.page); })
+                        //.attr('y2', (d) => height)
+                        .attr('stroke','#ccc'); */
+        
+                    links.classed('highlighted',false); // Turns off links highlight with CSS
+                })
+                //For debugging purposes
+                .on('click', function(d, i) {
+                    console.log("You clicked", d), i;
+                    d3.select(this)
+                        .transition()
+                        .attr('r', 20);
+
                 });
 
     //Add the links
     links = gLinks.selectAll('.link')
                     .data(data)
                     .enter().append('line')
-                    .attr('class', 'link')
-                    .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                    .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
-                    .attr('x2', function (d) { return brushXConverter(d.page); })
-                    .attr('y2', (d) => height)
-                    .attr('stroke-width', '0.4')
-                    .attr('stroke','#CCC')
-
-
+                        .attr('class', 'link')
+                        .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
+                        .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
+                        .attr('x2', function (d) { return brushXConverter(d.page); })
+                        .attr('y2', (d) => height)
+                        .attr('stroke-width', '0.4')
+                        .attr('stroke','#CCC')
     drawPages();
 });

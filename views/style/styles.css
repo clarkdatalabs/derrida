@@ -4,11 +4,15 @@ body {
 
 h1 {
     color: blue;
+
+    /*
     size: 
+    */
+
 }
 
 p {
-    color: rgb(103, 103, 253);
+    color: darkblue;
 }
 
 h3 {
@@ -32,7 +36,12 @@ h3 {
 }
 
 circle {
-    fill: steelblue;
+    fill: steelblue
+}
+
+.maplegend svg{
+    display: inline;
+
 }
 
 rect.page {
@@ -63,6 +72,14 @@ line.link.show {
     stroke-width: 0.4;
 }
 
+
+/*
+    Highlights
+*/
+line.link.highlighted{
+    stroke: rgba(255, 187, 0, 0.849);
+    stroke-width: 0.8;
+}
 
 
 
@@ -95,39 +112,24 @@ line.link.show {
 
 
 .fr {
-    fill: #00008b;
-    /**/
+    fill: #1C5696;
 }
 .da {
-    /*fill: #62a1a9*/
-    fill: #c83d32
+    fill: #05badd
 }
 
-
 .it{
-    fill: #99af5d
-    /*fill: black;*/
-    /*works*/
+    fill: #ffb404
 }
 
 .la{
-    /*fill: black;*/
-    /*fill: #FFFF00  ;*/
-    fill: #fada5e
-    /*works*/
+    fill: #ff3902
 }
-
 
 .de{
-    fill: #2b595a;
-/*https://www.color-hex.com/color-palette/67502*/
-/*works!*/
+    fill: #99d594;
 }
 
-
-
 .en{
-    fill: #FF8C00
-    
-    /*works!*/
+    fill: #ff8007
 }
