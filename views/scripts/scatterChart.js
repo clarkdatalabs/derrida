@@ -6,8 +6,13 @@ var links;
 
 var y;
 
+// variables that are used in both 'mouseover' & 'mouseout'
+var lineClassName;
+var pageNumIds;
+var selectedLanguageLegendId;
 
-d3.csv("data/combined.csv", function(data) {
+
+d3.csv("data/dataNode.csv", function(data) {
     // Convert strings to numbers.
     data.forEach(function(error,d) {
         //if (error) throw error;
@@ -33,12 +38,6 @@ d3.csv("data/combined.csv", function(data) {
             d.page = +d.page;
         }
     });
-
-    var minX = 0;
-    var maxX = 445;
-
-    var minY = d3.min(data, function(d) { return d.dateLog });
-    var maxY = d3.max(data, function(d) { return d.dateLog });
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -76,12 +75,14 @@ d3.csv("data/combined.csv", function(data) {
     	.attr('transform', 'translate(0,' + heightXAxis + ')')
     	.call(xAxis);
 
-    svg.append("text")             
+    svg.append("text")
         .attr("transform",
-            "translate(" + (width/2) + " ," + 
+            "translate(" + (width/2) + " ," +
             (height + margin.top + 100) + ")")
+
         .style("text-anchor", "start")
-        .text("Page of Reference");        
+
+        .text("Page of Reference");
 
 
     // Create the y axis
@@ -105,7 +106,7 @@ d3.csv("data/combined.csv", function(data) {
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
-        .text("Date of reference"); 
+        .text("Date of reference");
 
     var gLinks = main
         .append('g')
@@ -120,40 +121,41 @@ d3.csv("data/combined.csv", function(data) {
         .style("opacity", 0);
 
 // append legend to page
-    var legendSVG = d3.select("#maplegend")
-            .append("svg")
-              .attr("transform","translate(500,0)")
+    var legendSVG = d3.select("svg")
+            // .append("svg")
+            // .attr("transform","translate(500,0)")
 
-            .attr("width", width)
-            .attr("height", 200)
+            // .attr("width", width)
+            // .attr("height", 200)
 
     var ordinal = d3.scaleOrdinal()
         .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)", 
+        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)",
             "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
-        [{language:"fr"},
-        {language:"da"},
-        {language:"de"},
-        {language:"en"},
-        {language:"la"},
-        {language:"it"}];
+        [{language:"fr",full:"French"},
+        {language:"da", full: "Danish"},
+        {language:"de", full: 'German'},
+        {language:"en", full: "English"},
+        {language:"la", full: 'Latin'},
+        {language:"it", full: 'Italian'}];
 
 // build legend
     legend = legendSVG.selectAll(".lentry")
             .data(language_data)
             .enter()
             .append("g")
-            .attr("width","40px")
-            .attr("height","45px")
+            .attr("id", function(d) {return (d.language) + 'Legend'})
+            // .attr("width","80px")
+            // .attr("height","80px")
             // .attr("class","leg")
 
     legend.append("rect")
-            .attr("y", function(d,i) { return(i*25 + 30)})
-            .attr("width","10px")
-            .attr("height","25px")
-
+            .attr("y", 38)
+            .attr("width","30px")
+            .attr("height","4px")
+            .attr("x", function(d,i) { return(svgWidth- (i+1) *55)})
             // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
@@ -163,95 +165,161 @@ d3.csv("data/combined.csv", function(data) {
 
     legend.append("text")
                 // .attr("class", "legText")
-                .text(function(d, i) { return d.language ; })
+                .text(function(d, i) { return d.full ; })
                 // .text("class", function(d) {return (d.language)})
-                .attr("x", 20)
-                .attr("y", function(d, i) { return (25 * i) + 45; })
+                .attr("y", 30)
+                .attr("x", function(d,i) { return(svgWidth- (i+1) *55)})
+                .attr("font-size", 8)
+                .attr("font-family", "sans-serif")
+                .attr("font-weight", "lighter")
+
+                // .attr("y", function(d, i) { return (25 * i) + 45; })
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
-    legend.append("text")             
+    legendSVG.append("text")
         // .attr("transform",
-        //     "translate(" + (width/2) + " ," + 
+        //     "translate(" + (width/2) + " ," +
         //     (height + margin.top) + ")")
         .style("text-anchor", "start")
         .text("Language")
-        .attr("y",20);    
+        .attr("x", svgWidth - 200)
+        .attr("y",10);
+
 
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
-                    .attr('class', function(d) {return 'reference ' + d.language})
-                    // .attr("cx", function (d) { return brushXConverter(d.page); } )
-                    .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+                // .attr("cx", 30)
+                // .attr("cy", 30)
+                // .attr("r", 20);
 
-                    .attr("cy", function (d) { return y(d.dateLog); } )
-                    .attr("r", 8)
-                    // .style("fill", function(d) { return d.language;})
+                .attr('class', function(d) {return 'reference ' + d.language})
+                // .attr("cx", function (d) { return brushXConverter(d.page); } )
+                .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
-
+                .attr("cy", function (d) { return y(d.dateLog); } )
+                .attr("r", 5)
+                // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
+                    //1. nodes get bigger
+                    d3.select(this) // Get bigger on hover
+                        .transition()
+                        .duration(200)
+                        .attr('r', 10);
+
+                    //2. show tooltip div
                     div.transition()
                         .duration(200)
                         //.style("opacity", .9);
-                        .style("opacity", 200);
+                        .style("opacity", 1);
+
+                    //2. rebuild the tootip interms of content and position
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
                         "<br/>Publication Year: " + d.date)
-                        .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
-                    d3.select(this) // Get bigger on hover
+
+                    let divWidth = div.node().getBoundingClientRect().width;
+                    let divHeight = div.node().getBoundingClientRect().height;
+                    let blockLegendY = 155; //use console to ditect...
+                    let divY;
+                        divY = d3.event.pageY - divHeight - this.r.baseVal.value * 2; //based on the height of the tooltip, decide it's Y value
+                    let divX;
+                        if (d3.event.pageX < svgWidth - 5 * 55 - divWidth){
+                            divX = d3.event.pageX + this.r.baseVal.value * 2; // tooltip is to the right of the big node
+                        } else{
+                            divX = d3.event.pageX - this.r.baseVal.value * 2 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
+                            if (d3.event.pageX >= svgWidth - 5 * 55 && divY < blockLegendY){ // if the tooltip block the legend from below
+                                // console.log(divY); //detect blockLegendY when not sure...
+                                // console.log(d3.event.pageX)
+                                divY = blockLegendY;
+                            }
+                        };
+
+
+                    div.style("left", divX + "px")
+                        .style("top", divY + "px");
+
+                    //3. highlight the lines linking the hovered node
+                    lineClassName = '.' + 'node' + d.id;
+                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
+
+                    //4. highlight the pages linked to the hovered node
+                    let referenceTitle = d.bookTitle;
+                    pageNumIds = [];
+                    data.forEach((thisData) => {
+                        if (thisData.bookTitle == referenceTitle){
+                            pageNumIds.push('#' + 'page' + thisData.page)
+                        }
+                    })
+                    pageNumIds.forEach((pageId) => {
+                        d3.select(pageId)
+                            .classed('highlighted',true)
+                    })
+
+                    //5. highlight the language lengend accordingly
+                    let selectedLanguageClass = d3.select(this).node().classList[1];
+                    selectedLanguageLegendId = '#' + selectedLanguageClass + 'Legend';
+                    d3.select(selectedLanguageLegendId)
+                        .select('rect')
                         .transition()
-                        .duration(100)
-                        .attr('r', 20);
-                        links.classed('highlighted',true); //turns on links highlight with CSS
-                    /*d3.selectAll('line') //highlights lines with d3
-                        .data(data)
-                        .attr('class', 'link show')
-                        //.attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                        //.attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
-                        //.attr('x2', function (d) { return brushXConverter(d.page); })
-                        //.attr('y2', (d) => height)
-                        .attr('stroke','#66cf2b') */
-                    }
-                    
-                    )
+                        .duration(200)
+                        .attr('height', 10)
+                        .attr('y', 36);
+
+                        // .classed('highlightLegend', true);
+                  })
+
                 .on("mouseout", function(d) {
-                    div.transition()
-                        .duration(500)
-
-                        .style("opacity", 0);
-                    d3.select(this) // Get smaller after hover
+                    //1. nodes get smaller
+                    d3.select(this) // nodes get smaller after hoverout
                         .transition()
                         .duration(100)
-                        .attr('r', 8);
+                        .attr('r', 5);
 
-                    /*
-                    d3.select('line') //Unhighlight lines with d3
-                        .data(data)
-                        .attr('class', 'link show')
-                        //.attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                        //.attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
-                        //.attr('x2', function (d) { return brushXConverter(d.page); })
-                        //.attr('y2', (d) => height)
-                        .attr('stroke','#ccc'); */
-        
-                    links.classed('highlighted',false); // Turns off links highlight with CSS
+                    //2. hide tooltip div
+                    div.transition()
+                        .duration(100)
+                        .style("opacity", 0);
+
+                    //3. unhighlighing the highlighted lines
+                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
+
+                    //4. unhighlighing the highlighted pages
+                    pageNumIds.forEach((pageId) => {
+                        d3.select(pageId)
+                            .classed('highlighted',false)
+                    })
+
+                    //5. unhighlighing the highlighted legend
+                    d3.select(selectedLanguageLegendId)
+                        .select('rect')
+                        .transition()
+                        .duration(100)
+                        .attr('height', 4)
+                        .attr('y', 38);
+                        // .classed('highlightLegend', false);
+
+
                 })
+
                 //For debugging purposes
                 .on('click', function(d, i) {
                     console.log("You clicked", d), i;
+                    /*
                     d3.select(this)
                         .transition()
-                        .attr('r', 20);
+                        .attr('r', 20); */
+
                 });
 
     //Add the links
     links = gLinks.selectAll('.link')
                     .data(data)
                     .enter().append('line')
-                        .attr('class', 'link')
+
+                        .attr('class',function(d) { return 'link node' + d.id})
                         .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
                         .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
                         .attr('x2', function (d) { return brushXConverter(d.page); })

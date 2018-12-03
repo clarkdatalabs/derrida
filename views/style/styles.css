@@ -4,9 +4,11 @@ body {
 
 h1 {
     color: blue;
+
     /*
-    size: 
+    size:
     */
+
 }
 
 p {
@@ -34,7 +36,12 @@ h3 {
 }
 
 circle {
-    fill: steelblue;
+    fill: steelblue
+}
+
+.maplegend svg{
+    display: inline;
+
 }
 
 rect.page {
@@ -44,6 +51,10 @@ rect.page {
 rect.page.active {
     stroke: steelblue;
     stroke-width: 1;
+}
+
+rect.page.active.highlighted {
+    stroke: rgba(255, 187, 0, 0.849);
 }
 
 circle.reference {
@@ -65,13 +76,27 @@ line.link.show {
     stroke-width: 0.4;
 }
 
+/* line.link.highlighted {
+    stroke-width: 1;
+    stroke: rgba(255, 187, 0, 0.4);
+} */
+
+line.link.show.highlighted {
+    stroke-width: 1.2;
+    stroke: rgba(255, 187, 0, 1);
+    opacity: 0.8;
+}
+
+
 /*
     Highlights
 */
 line.link.highlighted{
     stroke: rgba(255, 187, 0, 0.849);
     stroke-width: 0.8;
+    opacity: 0.15;
 }
+
 
 
 #tooltip {
@@ -103,39 +128,34 @@ line.link.highlighted{
 
 
 .fr {
-    fill: #3288bd;
-    /**/
+    fill: #1C5696;
 }
 .da {
-    /*fill: #62a1a9*/
-    fill: #d53e4f
+    fill: #05badd
 }
 
-
-.it{
-    fill: #fc8d59
-    /*fill: black;*/
-    /*works*/
+.it {
+    fill: #ffb404
 }
 
-.la{
-    /*fill: black;*/
-    /*fill: #FFFF00  ;*/
-    fill: #e6f598
-    /*works*/
+.la {
+    fill: #ff3902
 }
 
-
-.de{
+.de {
     fill: #99d594;
-/*https://www.color-hex.com/color-palette/67502*/
-/*works!*/
 }
 
+.en {
+    fill: #ff8007
+}
 
+.highlightLegend rect{
+    /* width: 15px; */
+    height: 10px;
+    y:36px;
+}
 
-.en{
-    fill: #fee08b
-    
-    /*works!*/
+.highlightLegend text{
+    font-weight: bold;
 }
