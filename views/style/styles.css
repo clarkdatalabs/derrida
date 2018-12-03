@@ -134,18 +134,28 @@ line.link.highlighted{
     fill: #05badd
 }
 
-.it{
+.it {
     fill: #ffb404
 }
 
-.la{
+.la {
     fill: #ff3902
 }
 
-.de{
+.de {
     fill: #99d594;
 }
 
-.en{
+.en {
     fill: #ff8007
+}
+
+.highlightLegend rect{
+    /* width: 15px; */
+    height: 10px;
+    y:36px;
+}
+
+.highlightLegend text{
+    font-weight: bold;
 }
