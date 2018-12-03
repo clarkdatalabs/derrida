@@ -198,24 +198,31 @@ d3.csv("data/dataNode.csv", function(data) {
                 // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
 
+                    d3.select(this) // Get bigger on hover
+                        .transition()
+                        .duration(200)
+                        .attr('r', 10);
+
                     div.transition()
                         .duration(200)
                         //.style("opacity", .9);
-                        .style("opacity", 200);
+                        .style("opacity", 1);
+
+                    let divX = d3.event.pageX + this.r.baseVal.value * 2; // tooltip is to the right of the big node
                     div.html('<p>' + d.bookTitle + '</p>' +
                         "<br/>Author: " + d.author +
                         "<br/>Publication Year: " + d.date)
-                        .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
-                    d3.select(this) // Get bigger on hover
-                        //.transition()
-                        //.duration(100)
-                        .attr('r', 10);
-                        //links.classed('highlighted',true); //turns on links highlight with CSS
+                        .style("left", divX + "px");
+
+
+                    let divY = d3.event.pageY - div.node().getBoundingClientRect().height - this.r.baseVal.value * 2; //based on the height of the tooltip, decide it's Y value
+                    div.style("top", divY + "px");
+
+                    //highlight the lines linking the hovered node
                     lineClassName = '.' + 'node' + d.id;
                     d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
 
-
+                    //highlight the pages linked to the hovered node
                     let referenceTitle = d.bookTitle;
                     pageNumIds = [];
                     data.forEach((thisData) => {
@@ -231,12 +238,12 @@ d3.csv("data/dataNode.csv", function(data) {
 
                 .on("mouseout", function(d) {
                     div.transition()
-                        .duration(500)
+                        .duration(100)
                         .style("opacity", 0);
 
                     d3.select(this) // Get smaller after hover
-                        //.transition()
-                        //.duration(100)
+                        .transition()
+                        .duration(100)
                         .attr('r', 5);
                     d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
 
