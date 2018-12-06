@@ -123,7 +123,7 @@ d3.csv("data/dataNode.csv", function(data) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-// append legend to page
+    // append legend to page
     var legendSVG = d3.select("svg")
             // .append("svg")
             // .attr("transform","translate(500,0)")
@@ -131,10 +131,6 @@ d3.csv("data/dataNode.csv", function(data) {
             // .attr("width", width)
             // .attr("height", 200)
 
-    var ordinal = d3.scaleOrdinal()
-        .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)",
-            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
         [{language:"fr",full:"French"},
@@ -144,27 +140,22 @@ d3.csv("data/dataNode.csv", function(data) {
         {language:"la", full: 'Latin'},
         {language:"it", full: 'Italian'}];
 
-// build legend
+    // build legend
     legend = legendSVG.selectAll(".lentry")
             .data(language_data)
             .enter()
             .append("g")
             .attr("id", function(d) {return (d.language) + 'Legend'})
-            // .attr("width","80px")
-            // .attr("height","80px")
-            // .attr("class","leg")
 
     legend.append("rect")
             .attr("y", 38)
             .attr("width","30px")
             .attr("height","4px")
             .attr("x", function(d,i) { return(svgWidth- (i+1) *55)})
-            // .attr("fill", function(d) { return cValue(data)})
 
             .attr("class", function(d) {return (d.language)})
             .attr("stroke","#7f7f7f")
             .attr("stroke-width","0.2");
-            // color = d3.scaleOrdinal(d3.schemeCategory10);
 
     legend.append("text")
                 // .attr("class", "legText")
@@ -181,9 +172,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
 
     legendSVG.append("text")
-        // .attr("transform",
-        //     "translate(" + (width/2) + " ," +
-        //     (height + margin.top) + ")")
+
         .style("text-anchor", "start")
         .text("Language")
         .attr("x", svgWidth - 200)
@@ -194,12 +183,8 @@ d3.csv("data/dataNode.csv", function(data) {
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
-                // .attr("cx", 30)
-                // .attr("cy", 30)
-                // .attr("r", 20);
 
                 .attr('class', function(d) {return 'reference ' + d.language})
-                // .attr("cx", function (d) { return brushXConverter(d.page); } )
                 .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
                 .attr("cy", function (d) { return y(d.dateLog); } )
@@ -270,8 +255,6 @@ d3.csv("data/dataNode.csv", function(data) {
                         .duration(200)
                         .attr('height', 10)
                         .attr('y', 36);
-
-                        // .classed('highlightLegend', true);
                   })
 
                 .on("mouseout", function(d) {
