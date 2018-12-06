@@ -77,7 +77,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
     svg.append("text")
         .attr("transform",
-            "translate(" + (width/2) + " ," +
+            "translate(" + (width/1.45) + " ," +
             (height + margin.top + 100) + ")")
 
         .style("text-anchor", "start")
@@ -106,7 +106,7 @@ d3.csv("data/dataNode.csv", function(data) {
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 100 - margin.left)
-        .attr("x",0 - (height / 2))
+        .attr("x",50 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
         .text("Date of reference");
