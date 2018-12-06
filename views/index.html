@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Sample Scaffold</title>
+        <title>Derrida's Sources</title>
         <script src='https://d3js.org/d3.v4.min.js'></script>
         <!--script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -10,7 +10,8 @@
 
     <body>
 
-        <h3>Derrida's <br><i>Sources</i></h3></h3>
+        <h3>Derrida's Sources <br>Citations and References in <i>Of Grammatology</i></h3></h3>
+        <h4>Data from Princeton's <a href="https://derridas-margins.princeton.edu/">Derrida's Margins Project.</a> Drag x-axis to adjust page range.</h4>
         <!-- <ul> </ul> -->
         <svg></svg>
         <div id="tooltip" class="hidden">
@@ -23,7 +24,7 @@
             //  Set some other Parameters that are needed in more than one js files
                 var svg = d3.select('svg');
                 var svgWidth = $(window).width() - 30;
-                var svgHeight = $(window).height() - 90;
+                var svgHeight = $(window).height() - 150;
 
                 var totalPage = 445;
                 var numOfPageEveryRec = 1;

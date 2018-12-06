@@ -47,7 +47,7 @@ d3.csv("data/dataNode.csv", function(data) {
     // Scale the range of the data
     var y = d3.scaleLinear()
         //.domain([0, 2017]) //There's some values assigned to 0 from data
-        .domain([6.5, 0])
+        .domain([6.5, 0.4])
         .range([ height, 0 ]);
 
     // Create Canvass
@@ -88,8 +88,11 @@ d3.csv("data/dataNode.csv", function(data) {
     // Create the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
-        .ticks(20)
-        .tickFormat(function(d) {return 1970 - Math.floor(Math.pow(Math.exp(1), d));});
+        .tickValues([Math.log(1.5), Math.log(2.5), Math.log(3.5), Math.log(4.5), Math.log(6.5), 
+            Math.log(9.5), Math.log(14.5), Math.log(19.5), Math.log(29.5), Math.log(39.5), Math.log(49.5), Math.log(59.5),Math.log(69.5), 
+            Math.log(169.5), Math.log(269.5), Math.log(369.5)])
+        .tickFormat(function(d) {return Math.floor(1969.5 - Math.pow(Math.E, d));});
+
 
     // Add y axis to canvas
     main.append('g')
