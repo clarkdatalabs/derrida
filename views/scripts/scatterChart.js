@@ -1,9 +1,6 @@
-// parse the date / time
-//var parseTime = d3.timeParse("%y");
 
 var scatters;
 var links;
-
 var y;
 
 // variables that are used in both 'mouseover' & 'mouseout'
@@ -11,33 +8,38 @@ var lineClassName;
 var pageNumIds;
 var selectedLanguageLegendId;
 
-
 d3.csv("data/dataNode.csv", function(data) {
-    // Convert strings to numbers.
+    // Convert strings to numbers with '+'
     data.forEach(function(error,d) {
-        //if (error) throw error;
+        d.date = +d.date;
+        d.page = +d.page;
 
-        if (d.date == 'NA' || d.date == 'NaN' ){
-            d.date = 0;
-        }
-
-        if (d.dateLog == ''){
-            d.dateLog = 0;
-        }
-        else{
-            d.date = +d.date;
-            d.dateLog = +d.dateLog;
-            //d.PublicationYear = +d.PublicationYear;
-        }
-
-
-        if (d.page == 'NaN' || d.page == 'NA' ){
-            d.page = 0;
-        }
-        else{
-            d.page = +d.page;
-        }
     });
+
+    // compute logarithmic scale for date data 
+    for (i = 0; i < data.length; ++i) { 
+        data[i].logDate = Math.abs(Math.log(1969.5 - data[i].date)); 
+    }
+    // use 'logDate' variable in scatter 
+
+    // compute average position given multiple page locations 
+    var dataRollup = d3.nest() 
+        .key(function(d) { 
+            return +d.id; 
+        })
+        .rollup(function(d) { 
+            return d3.mean(d, function(g) { 
+                return +g.page; })
+            })
+        .entries(data);
+
+        console.log(dataRollup[3].value); 
+
+    // write in data 
+    data.forEach(function (d){
+        match = dataRollup.filter(function(g) {return g.key==d.id});
+        d.avgPos = match[0].value; 
+    }) 
 
     var margin = {top: 20, right: 15, bottom: 60, left: 80}
     var width = 960 - margin.left - margin.right;
@@ -45,9 +47,10 @@ d3.csv("data/dataNode.csv", function(data) {
     var heightXAxis = height + pageHeight;
 
     // Scale the range of the data
+    
+    var maxY = 6.5; // FIX to compute max logDate value + 1 
     var y = d3.scaleLinear()
-        //.domain([0, 2017]) //There's some values assigned to 0 from data
-        .domain([6.5, 0.4])
+        .domain([maxY, 0.4]) 
         .range([ height, 0 ]);
 
     // Create Canvass
@@ -81,7 +84,6 @@ d3.csv("data/dataNode.csv", function(data) {
             (height + margin.top + 100) + ")")
 
         .style("text-anchor", "start")
-
         .text("Page of Reference");
 
 
@@ -89,10 +91,9 @@ d3.csv("data/dataNode.csv", function(data) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .tickValues([Math.log(1.5), Math.log(2.5), Math.log(3.5), Math.log(4.5), Math.log(6.5), 
-            Math.log(9.5), Math.log(14.5), Math.log(19.5), Math.log(29.5), Math.log(39.5), Math.log(49.5), Math.log(59.5),Math.log(69.5), 
+            Math.log(9.5), Math.log(14.5), Math.log(19.5), Math.log(29.5), Math.log(39.5), Math.log(49.5),Math.log(69.5), 
             Math.log(169.5), Math.log(269.5), Math.log(369.5)])
         .tickFormat(function(d) {return Math.floor(1969.5 - Math.pow(Math.E, d));});
-
 
     // Add y axis to canvas
     main.append('g')
@@ -109,12 +110,11 @@ d3.csv("data/dataNode.csv", function(data) {
         .attr("x",50 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
-        .text("Date of reference");
+        .text("Publication Year of Reference");
 
     var gLinks = main
         .append('g')
         .attr('class', 'link')
-        // .attr("transform", "translate(" + margin_left + "," +  20 + ")");
 
     var g = main.append("svg:g");
 
@@ -125,11 +125,6 @@ d3.csv("data/dataNode.csv", function(data) {
 
     // append legend to page
     var legendSVG = d3.select("svg")
-            // .append("svg")
-            // .attr("transform","translate(500,0)")
-
-            // .attr("width", width)
-            // .attr("height", 200)
 
 
     var language_data =
@@ -158,21 +153,15 @@ d3.csv("data/dataNode.csv", function(data) {
             .attr("stroke-width","0.2");
 
     legend.append("text")
-                // .attr("class", "legText")
                 .text(function(d, i) { return d.full ; })
-                // .text("class", function(d) {return (d.language)})
                 .attr("y", 30)
                 .attr("x", function(d,i) { return(svgWidth- (i+1) *55)})
                 .attr("font-size", 8)
                 .attr("font-family", "sans-serif")
                 .attr("font-weight", "lighter")
 
-                // .attr("y", function(d, i) { return (25 * i) + 45; })
-                // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
-
 
     legendSVG.append("text")
-
         .style("text-anchor", "start")
         .text("Language")
         .attr("x", svgWidth - 200)
@@ -187,9 +176,8 @@ d3.csv("data/dataNode.csv", function(data) {
                 .attr('class', function(d) {return 'reference ' + d.language})
                 .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
 
-                .attr("cy", function (d) { return y(d.dateLog); } )
+                .attr("cy", function (d) { return y(d.logDate); } )
                 .attr("r", 5)
-                // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
                     //1. nodes get bigger
                     d3.select(this) // Get bigger on hover
@@ -200,13 +188,12 @@ d3.csv("data/dataNode.csv", function(data) {
                     //2. show tooltip div
                     div.transition()
                         .duration(200)
-                        //.style("opacity", .9);
                         .style("opacity", 1);
 
                     //2. rebuild the tootip interms of content and position
                     div.html('<p>' + d.bookTitle + '</p>' +
-                        "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date)
+                        "<br/><b>Author:</b> " + d.author +
+                        "<br/><b>Publication Year:</b> " + d.date)
 
                     let divWidth = div.node().getBoundingClientRect().width;
                     let divHeight = div.node().getBoundingClientRect().height;
@@ -219,8 +206,6 @@ d3.csv("data/dataNode.csv", function(data) {
                         } else{
                             divX = d3.event.pageX - this.r.baseVal.value * 2 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
                             if (d3.event.pageX >= svgWidth - 5 * 55 && divY < blockLegendY){ // if the tooltip block the legend from below
-                                // console.log(divY); //detect blockLegendY when not sure...
-                                // console.log(d3.event.pageX)
                                 divY = blockLegendY;
                             }
                         };
@@ -285,18 +270,12 @@ d3.csv("data/dataNode.csv", function(data) {
                         .duration(100)
                         .attr('height', 4)
                         .attr('y', 38);
-                        // .classed('highlightLegend', false);
-
 
                 })
 
                 //For debugging purposes
                 .on('click', function(d, i) {
                     console.log("You clicked", d), i;
-                    /*
-                    d3.select(this)
-                        .transition()
-                        .attr('r', 20); */
 
                 });
 
@@ -307,7 +286,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
                         .attr('class',function(d) { return 'link node' + d.id})
                         .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                        .attr('y1', function (d) { return y(d.dateLog) < height ? y(d.dateLog) : height ; })
+                        .attr('y1', function (d) { return y(d.logDate) < height ? y(d.logDate) : height ; })
                         .attr('x2', function (d) { return brushXConverter(d.page); })
                         .attr('y2', (d) => height)
                         .attr('stroke-width', '0.4')
