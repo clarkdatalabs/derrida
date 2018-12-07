@@ -80,7 +80,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
     svg.append("text")
         .attr("transform",
-            "translate(" + (width/2) + " ," +
+            "translate(" + (width/1.45) + " ," +
             (height + margin.top + 100) + ")")
 
         .style("text-anchor", "start")
@@ -107,7 +107,7 @@ d3.csv("data/dataNode.csv", function(data) {
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 100 - margin.left)
-        .attr("x",0 - (height / 2))
+        .attr("x",50 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
         .text("Publication Year of Reference");
@@ -126,10 +126,6 @@ d3.csv("data/dataNode.csv", function(data) {
     // append legend to page
     var legendSVG = d3.select("svg")
 
-    var ordinal = d3.scaleOrdinal()
-        .domain(["a", "b", "c", "d", "e"])
-        .range([ "rgb(153, 107, 195)", "rgb(56, 106, 197)",
-            "rgb(93, 199, 76)", "rgb(223, 199, 31)", "rgb(234, 118, 47)"]);
 
     var language_data =
         [{language:"fr",full:"French"},
