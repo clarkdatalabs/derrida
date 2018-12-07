@@ -10,6 +10,8 @@ var y;
 var lineClassName;
 var pageNumIds;
 var selectedLanguageLegendId;
+var hoveredLanguageNodesDs;
+// var wasHiglighted = false;
 
 
 d3.csv("data/dataNode.csv", function(data) {
@@ -151,6 +153,7 @@ d3.csv("data/dataNode.csv", function(data) {
             // .attr("height","80px")
             // .attr("class","leg")
 
+
     legend.append("rect")
             .attr("y", 38)
             .attr("width","30px")
@@ -177,6 +180,25 @@ d3.csv("data/dataNode.csv", function(data) {
                 // .attr("y", function(d, i) { return (40 * i) + 20 + 4; })
 
 
+    legend.on("mouseover", function(d) {
+                let hoveredLanguage = d.language;
+                selectedLanguageLegendId = '#' + hoveredLanguage + 'Legend';
+                languageHeightChange(selectedLanguageLegendId, true)
+
+                hoveredLanguageNodesDs = data.filter((dn) => dn.language == hoveredLanguage);
+                // console.log(hoveredLanguageNodesDs)
+                hoveredLanguageNodesDs.forEach((n_d) => nodeHighlighted(n_d, data, true))
+
+
+            })
+            .on("mouseout", function(d) {
+                languageHeightChange(selectedLanguageLegendId, false)
+                // console.log(hoveredLanguageNodesDs)
+                hoveredLanguageNodesDs.forEach((n_d) => nodeHighlighted(n_d, data, false))
+            })
+
+
+
     legendSVG.append("text")
         // .attr("transform",
         //     "translate(" + (width/2) + " ," +
@@ -191,6 +213,7 @@ d3.csv("data/dataNode.csv", function(data) {
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
+                .attr('id', (d) => "node" + d.id)
                 // .attr("cx", 30)
                 // .attr("cy", 30)
                 // .attr("r", 20);
@@ -203,105 +226,22 @@ d3.csv("data/dataNode.csv", function(data) {
                 .attr("r", 5)
                 // .style("fill", function(d) { return d.language;})
                 .on("mouseover", function(d) {
-                    //1. nodes get bigger
-                    d3.select(this) // Get bigger on hover
-                        .transition()
-                        .duration(200)
-                        .attr('r', 10);
+                                nodeHighlighted(d, data, true);
 
-                    //2. show tooltip div
-                    div.transition()
-                        .duration(200)
-                        //.style("opacity", .9);
-                        .style("opacity", 1);
+                                toggleTooltip(div, d, 1);
 
-                    //2. rebuild the tootip interms of content and position
-                    div.html('<p>' + d.bookTitle + '</p>' +
-                        "<br/>Author: " + d.author +
-                        "<br/>Publication Year: " + d.date)
+                                let selectedLanguageClass = d3.select(this).node().classList[1];
+                                selectedLanguageLegendId = '#' + selectedLanguageClass + 'Legend';
+                                languageHeightChange(selectedLanguageLegendId, true)
 
-                    let divWidth = div.node().getBoundingClientRect().width;
-                    let divHeight = div.node().getBoundingClientRect().height;
-                    let blockLegendY = 155; //use console to ditect...
-                    let divY;
-                        divY = d3.event.pageY - divHeight - this.r.baseVal.value * 2; //based on the height of the tooltip, decide it's Y value
-                    let divX;
-                        if (d3.event.pageX < svgWidth - 5 * 55 - divWidth){
-                            divX = d3.event.pageX + this.r.baseVal.value * 2; // tooltip is to the right of the big node
-                        } else{
-                            divX = d3.event.pageX - this.r.baseVal.value * 2 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
-                            if (d3.event.pageX >= svgWidth - 5 * 55 && divY < blockLegendY){ // if the tooltip block the legend from below
-                                // console.log(divY); //detect blockLegendY when not sure...
-                                // console.log(d3.event.pageX)
-                                divY = blockLegendY;
-                            }
-                        };
-
-
-                    div.style("left", divX + "px")
-                        .style("top", divY + "px");
-
-                    //3. highlight the lines linking the hovered node
-                    lineClassName = '.' + 'node' + d.id;
-                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
-
-                    //4. highlight the pages linked to the hovered node
-                    let referenceTitle = d.bookTitle;
-                    pageNumIds = [];
-                    data.forEach((thisData) => {
-                        if (thisData.bookTitle == referenceTitle){
-                            pageNumIds.push('#' + 'page' + thisData.page)
-                        }
-                    })
-                    pageNumIds.forEach((pageId) => {
-                        d3.select(pageId)
-                            .classed('highlighted',true)
-                    })
-
-                    //5. highlight the language lengend accordingly
-                    let selectedLanguageClass = d3.select(this).node().classList[1];
-                    selectedLanguageLegendId = '#' + selectedLanguageClass + 'Legend';
-                    d3.select(selectedLanguageLegendId)
-                        .select('rect')
-                        .transition()
-                        .duration(200)
-                        .attr('height', 10)
-                        .attr('y', 36);
-
-                        // .classed('highlightLegend', true);
                   })
 
                 .on("mouseout", function(d) {
-                    //1. nodes get smaller
-                    d3.select(this) // nodes get smaller after hoverout
-                        .transition()
-                        .duration(100)
-                        .attr('r', 5);
+                                nodeHighlighted(d, data, false);
 
-                    //2. hide tooltip div
-                    div.transition()
-                        .duration(100)
-                        .style("opacity", 0);
+                                toggleTooltip(div, d, 0)
 
-                    //3. unhighlighing the highlighted lines
-                    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
-
-                    //4. unhighlighing the highlighted pages
-                    pageNumIds.forEach((pageId) => {
-                        d3.select(pageId)
-                            .classed('highlighted',false)
-                    })
-
-                    //5. unhighlighing the highlighted legend
-                    d3.select(selectedLanguageLegendId)
-                        .select('rect')
-                        .transition()
-                        .duration(100)
-                        .attr('height', 4)
-                        .attr('y', 38);
-                        // .classed('highlightLegend', false);
-
-
+                                languageHeightChange(selectedLanguageLegendId, false)
                 })
 
                 //For debugging purposes
@@ -330,3 +270,111 @@ d3.csv("data/dataNode.csv", function(data) {
     gBrush.call(brush);
     gBrush.call(brush.move, [0, pageGroupWidth]);
 });
+
+
+
+function nodeRChange(nodeNode, r){
+    d3.select(nodeNode) // Get bigger on hover
+        .transition()
+        .duration(200)
+        .attr('r', r);
+}
+
+function toggleTooltip(tooltipDiv, d, opacity){
+
+    tooltipDiv.transition()
+                .duration(200)
+                //.style("opacity", .9);
+                .style("opacity", opacity);
+
+    if (opacity == 1){
+        let nodeId = '#node' + d.id;
+        let nodeNode = d3.select(nodeId).node();
+
+        // rebuild the tootip interms of content and position
+            tooltipDiv.html('<p>' + d.bookTitle + '</p>' +
+                            "<br/>Author: " + d.author +
+                            "<br/>Publication Year: " + d.date)
+
+            let divWidth = tooltipDiv.node().getBoundingClientRect().width;
+            let divHeight = tooltipDiv.node().getBoundingClientRect().height;
+            let blockLegendY = 155; //use console to ditect...
+            let divY;
+                divY = d3.event.pageY - divHeight - nodeNode.r.baseVal.value * 2; //based on the height of the tooltip, decide it's Y value
+            let divX;
+                if (d3.event.pageX < svgWidth - 5 * 55 - divWidth){
+                    divX = d3.event.pageX + nodeNode.r.baseVal.value * 2; // tooltip is to the right of the big node
+                } else{
+                    divX = d3.event.pageX - nodeNode.r.baseVal.value * 2 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
+                    if (d3.event.pageX >= svgWidth - 5 * 55 && divY < blockLegendY){ // if the tooltip block the legend from below
+                        divY = blockLegendY;
+                    }
+                };
+
+            tooltipDiv.style("left", divX + "px")
+                .style("top", divY + "px");
+    }
+}
+
+function toggleLines(lineClassName){
+    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
+}
+
+function togglePages(pageNumIds, ifHighlight){
+    pageNumIds.forEach((pageId) => {
+        d3.select(pageId)
+            .classed('highlighted',ifHighlight)
+    })
+}
+
+function languageHeightChange(selectedLanguageLegendId, ifHighlight){
+    let languageH = ifHighlight ? [10, 36] : [4, 38];
+    d3.select(selectedLanguageLegendId)
+        .select('rect')
+        .transition()
+        .duration(500)
+        .attr('height', languageH[0])
+        .attr('y', languageH[1]);
+}
+
+
+//integrate all above
+
+function nodeHighlighted(d, data, ifHighlight){
+    let nodeId = '#node' + d.id;
+    let nodeNode = d3.select(nodeId).node();
+
+
+    let nodeR = ifHighlight ? 10 : 5;
+
+
+    //1. nodes get bigger
+    nodeRChange(nodeNode, nodeR);
+
+    //2. highlight the lines linking the hovered node
+    lineClassName = '.' + 'node' + d.id;
+    toggleLines(lineClassName);
+
+    //3. highlight the pages linked to the hovered node
+    pageNumIds = [];
+
+    let referenceTitle = d.bookTitle;
+
+    data.forEach((thisData) => {
+        if (thisData.bookTitle == referenceTitle){
+            pageNumIds.push('#' + 'page' + thisData.page)
+        }
+    })
+
+    togglePages(pageNumIds, ifHighlight);
+
+    // //4. highlight the language lengend accordingly
+    // let selectedLanguageClass = d3.select(nodeNode).node().classList[1];
+    // let newSelectedLanguageLegendId = '#' + selectedLanguageClass + 'Legend';
+    // if(newSelectedLanguageLegendId != selectedLanguageLegendId || wasHiglighted != ifHighlight){
+    //     languageHeightChange(selectedLanguageLegendId, ifHighlight);
+    //     wasHiglighted = ifHighlight;
+    // }
+    // selectedLanguageLegendId = newSelectedLanguageLegendId;
+
+}

@@ -74,14 +74,14 @@ function drawPages() {
 function brushed() {
     var s = d3.event.selection;
 
-    console.log(s)
-    console.log(pageGroupWidth)
+    // console.log(s)
+    // console.log(pageGroupWidth)
 
     if (!s) {
         handle.attr("display", "none");
     } else {
-        console.log('come to here')
-        console.log(scatters)
+        // console.log('come to here')
+        // console.log(scatters)
         var brushedStartPage = Math.floor(s[0] * totalPage / pageGroupWidth);
         var brushedEndPage = Math.floor(s[1] * totalPage / pageGroupWidth);
 
