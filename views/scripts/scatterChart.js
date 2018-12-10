@@ -18,41 +18,63 @@ d3.csv("data/dataNode.csv", function(data) {
 
     });
 
-    // compute logarithmic scale for date data 
-    for (i = 0; i < data.length; ++i) { 
-        data[i].logDate = Math.abs(Math.log(1969.5 - data[i].date)); 
+    // compute logarithmic scale for date data
+    for (i = 0; i < data.length; ++i) {
+        data[i].logDate = Math.abs(Math.log(1969.5 - data[i].date));
     }
-    // use 'logDate' variable in scatter 
+    // use 'logDate' variable in scatter
 
-    // compute average position given multiple page locations 
-    var dataRollup = d3.nest() 
-        .key(function(d) { 
-            return +d.id; 
-        })
-        .rollup(function(d) { 
-            return d3.mean(d, function(g) { 
-                return +g.page; })
+    // for just each publication
+        // compute average position given multiple page locations
+            var dataRollup = d3.nest()
+                .key(function(d) {
+                    return +d.id;
+                })
+                .rollup(function(d) {
+                    return d3.mean(d, function(g) {
+                        return +g.page; })
+                    })
+                .entries(data);
+        // write in data
+            data.forEach(function (d){
+                match = dataRollup.filter(function(g) {return g.key==d.id});
+                d.avgPos = match[0].value;
             })
-        .entries(data);
 
-        console.log(dataRollup[3].value); 
+    // for just each publication
+        // compute average position given multiple page locations
+            var dataRollupAuthor = d3.nest()
+                .key(function(d) {
+                    return d.author;
+                })
+                .rollup(function(d) {
+                    return {
+                        'avePage': d3.mean(d, function(g) { return +g.page; }),
+                        'aveDate': d3.mean(d, function(g) { return +g.date; })
+                    }
+                })
+                .entries(data);
+        // write in data
+            data.forEach(function (d){
+                matchAuthor = dataRollupAuthor.filter(function(g) {return g.key==d.author});
+                d.avgPosAuthor = matchAuthor[0].value.avePage;
+                d.logDateAuthorAvg = Math.abs(Math.log(1969.5 - matchAuthor[0].value.aveDate))
+            })
 
-    // write in data 
-    data.forEach(function (d){
-        match = dataRollup.filter(function(g) {return g.key==d.id});
-        d.avgPos = match[0].value; 
-    }) 
 
-    var margin = {top: 20, right: 15, bottom: 60, left: 80}
+
+
+
+    var margin = {top: 20, right: 15, bottom: 60, left: 85}
     var width = 960 - margin.left - margin.right;
     var height = pageGroupY - pageHeight/2;
     var heightXAxis = height + pageHeight;
 
     // Scale the range of the data
-    
-    var maxY = 6.5; // FIX to compute max logDate value + 1 
+
+    var maxY = 6.5; // FIX to compute max logDate value + 1
     var y = d3.scaleLinear()
-        .domain([maxY, 0.4]) 
+        .domain([maxY, 0.4])
         .range([ height, 0 ]);
 
     // Create Canvass
@@ -82,8 +104,8 @@ d3.csv("data/dataNode.csv", function(data) {
 
     svg.append("text")
         .attr("transform",
-            "translate(" + (width/1.45) + " ," +
-            (height + margin.top + 100) + ")")
+            "translate(" + (width/1.2) + " ," +
+            (height + margin.top + pageHeight + 40) + ")")
 
         .style("text-anchor", "start")
         .text("Page of Reference");
@@ -92,8 +114,8 @@ d3.csv("data/dataNode.csv", function(data) {
     // Create the y axis
     var yAxis = d3.axisLeft()
         .scale(y)
-        .tickValues([Math.log(1.5), Math.log(2.5), Math.log(3.5), Math.log(4.5), Math.log(6.5), 
-            Math.log(9.5), Math.log(14.5), Math.log(19.5), Math.log(29.5), Math.log(39.5), Math.log(49.5),Math.log(69.5), 
+        .tickValues([Math.log(1.5), Math.log(2.5), Math.log(3.5), Math.log(4.5), Math.log(6.5),
+            Math.log(9.5), Math.log(14.5), Math.log(19.5), Math.log(29.5), Math.log(39.5), Math.log(49.5),Math.log(69.5),
             Math.log(169.5), Math.log(269.5), Math.log(369.5)])
         .tickFormat(function(d) {return Math.floor(1969.5 - Math.pow(Math.E, d));});
 
@@ -109,7 +131,7 @@ d3.csv("data/dataNode.csv", function(data) {
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 100 - margin.left)
-        .attr("x",50 - (height / 2))
+        .attr("x",55 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "end")
         .text("Publication Year of Reference");
@@ -190,27 +212,62 @@ d3.csv("data/dataNode.csv", function(data) {
         .attr("y",10);
 
 
+    // Add the scatterplot and links
+        drawScattersAndLinks('id', data, g, gLinks, y, height, div);
+        // drawScattersAndLinks('author', data, g, gLinks, y, height, div);
+
+        var showOption = d3.selectAll('.showOption')
+                            .on('change', function(){
+                                gLinks.remove();
+                                g.remove();
+                                gLinks = main.append('g')
+                                                .attr('class', 'link');
+                                g = main.append("svg:g");
+                                drawScattersAndLinks(this.value, data, g, gLinks, y, height, div);
+                            })
+
+
+
+    drawPages();
+    gBrush.call(brush);
+    gBrush.call(brush.move, [0, pageGroupWidth]);
+});
+
+
+
+
+function drawScattersAndLinks(baseOnCol, data, g, gLinks, y, height, tooltopDiv ){
+    let avePosUsed,
+        dateUsed;
+
+    if (baseOnCol == 'id'){
+        avePosUsed = 'avgPos';
+        dateUsed = 'logDate';
+    } else if (baseOnCol == 'author'){
+        avePosUsed = 'avgPosAuthor';
+        dateUsed = 'logDateAuthorAvg';
+    }
+
     // Add the scatterplot
     scatters = g.selectAll("scatter-dots")
                 .data(data)
                 .enter().append("circle")
-
                 .attr('id', (d) => "node" + d.id)
-                // .attr("cx", 30)
-                // .attr("cy", 30)
-                // .attr("r", 20);
 
 
                 .attr('class', function(d) {return 'reference ' + d.language})
-                .attr("cx", function (d) { return brushXConverter(d.avgPos); } )
+                .attr("cx", function (d) {
+                    // console.log(avePosUsed,":", d[avePosUsed])
+                    return brushXConverter(d[avePosUsed]);
+                } )
 
-                .attr("cy", function (d) { return y(d.logDate); } )
+                .attr("cy", function (d) { return y(d[dateUsed]); } )
                 .attr("r", 5)
                 .on("mouseover", function(d) {
 
                                 nodeHighlighted(d, data, true);
 
-                                toggleTooltip(div, d, 1);
+                                toggleTooltip(tooltopDiv, d, 1, baseOnCol);
 
                                 let selectedLanguageClass = d3.select(this).node().classList[1];
                                 selectedLanguageLegendId = '#' + selectedLanguageClass + 'Legend';
@@ -221,9 +278,7 @@ d3.csv("data/dataNode.csv", function(data) {
                 .on("mouseout", function(d) {
                                 nodeHighlighted(d, data, false);
 
-                                toggleTooltip(div, d, 0)
-
-                 
+                                toggleTooltip(tooltopDiv, d, 0)
 
                                 languageHeightChange(selectedLanguageLegendId, false)
                 })
@@ -238,18 +293,18 @@ d3.csv("data/dataNode.csv", function(data) {
     links = gLinks.selectAll('.link')
                     .data(data)
                     .enter().append('line')
-
                         .attr('class',function(d) { return 'link node' + d.id})
-                        .attr('x1', function (d) { return brushXConverter(d.avgPos); }) // the x of scatter will change (maybe p.avePage)
-                        .attr('y1', function (d) { return y(d.logDate) < height ? y(d.logDate) : height ; })
-                        .attr('x2', function (d) { return brushXConverter(d.page); })
+                        .attr('x1', function (d) { return brushXConverter(d[avePosUsed]); }) // the x of scatter will change (maybe p.avePage)
+                        .attr('y1', function (d) { return y(d[dateUsed]) < height ? y(d[dateUsed]) : height ; })
+                        .attr('x2', function (d) { return brushXConverter(d.page ); })
                         .attr('y2', (d) => height)
                         .attr('stroke-width', '0.4')
                         .attr('stroke','#CCC')
-    drawPages();
-    gBrush.call(brush);
-    gBrush.call(brush.move, [0, pageGroupWidth]);
-});
+}
+
+
+
+
 
 
 
@@ -260,7 +315,7 @@ function nodeRChange(nodeNode, r){
         .attr('r', r);
 }
 
-function toggleTooltip(tooltipDiv, d, opacity){
+function toggleTooltip(tooltipDiv, d, opacity, baseOnCol=''){
 
     tooltipDiv.transition()
                 .duration(200)
@@ -272,9 +327,17 @@ function toggleTooltip(tooltipDiv, d, opacity){
         let nodeNode = d3.select(nodeId).node();
 
         // rebuild the tootip interms of content and position
-            tooltipDiv.html('<p>' + d.bookTitle + '</p>' +
-                            "<br/>Author: " + d.author +
-                            "<br/>Publication Year: " + d.date)
+        switch(baseOnCol){
+            case 'id':
+                tooltipDiv.html('<p>' + d.bookTitle + '</p>' +
+                                "<br/>Author: " + d.author +
+                                "<br/>Publication Year: " + d.date);
+                break;
+            case 'author':
+                tooltipDiv.html('<p>' + d.author + '</p>' +
+                                "<br/>Publications: " + d.bookTitle); // need nest data for all publications for each author
+        }
+
 
             let divWidth = tooltipDiv.node().getBoundingClientRect().width;
             let divHeight = tooltipDiv.node().getBoundingClientRect().height;

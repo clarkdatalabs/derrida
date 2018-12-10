@@ -10,8 +10,14 @@
 
     <body>
 
-        <h3>Derrida's Sources <br>Citations and References in <i>Of Grammatology</i></h3></h3>
-        <h4>Data from Princeton's <a href="https://derridas-margins.princeton.edu/">Derrida's Margins Project.</a> Drag x-axis to adjust page range.</h4>
+        <h3 style="display: inline-block;">Derrida's Sources <br>Citations and References in <i>Of Grammatology</i></h3>
+        <p style="color: black; font-size: 0.8em; display: inline-block; margin-left:5vw;">Data from Princeton's <a href="https://derridas-margins.princeton.edu/">Derrida's Margins Project.</a> Drag x-axis to adjust page range.</p>
+        <form >
+            <input class="showOption" type="radio" name="scatterShow" value="id" checked> Publication<br>
+            <input class="showOption" type="radio" name="scatterShow" value="author"> Author<br>
+        </form>
+
+
         <!-- <ul> </ul> -->
         <svg></svg>
         <div id="tooltip" class="hidden">
@@ -24,20 +30,20 @@
             //  Set some other Parameters that are needed in more than one js files
                 var svg = d3.select('svg');
                 var svgWidth = $(window).width() - 30;
-                var svgHeight = $(window).height() - 150;
+                var svgHeight = $(window).height() - 200;
 
                 var totalPage = 445;
                 var numOfPageEveryRec = 1;
-                var margin_left = 80;
+                var margin_left = 84.5;
                 var margin_right = 10;
-                var margin_bottom = 80;
+                var margin_bottom = 40;
                 var padding_in_between = 2.2;
 
                 var pageHeight = 40;
                 var pageGroupWidth = (svgWidth) - margin_left - margin_right;
                 var pageWidth = pageGroupWidth / (totalPage/numOfPageEveryRec) - padding_in_between;
 
-                var pageGroupY = svgHeight - pageHeight - margin_bottom;
+                var pageGroupY = svgHeight - pageHeight - margin_bottom ;
 
                 var pageData = d3.range((totalPage/numOfPageEveryRec)+1);
 
@@ -56,8 +62,8 @@
             //set svg
                 svg.attr('width',svgWidth)
                     .attr('height',svgHeight)
-                    .style('background', '#ffffff');
-
+                    .style('background', '#ffffff')
+                    .style('margin-top', 50);
 
 
 
