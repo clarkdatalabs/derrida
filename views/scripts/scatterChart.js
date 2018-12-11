@@ -178,6 +178,7 @@ d3.csv("data/dataNode.csv", function(data) {
 
                 .attr("cy", function (d) { return y(d.logDate); } )
                 .attr("r", 5)
+                .style("opacity", 1)
                 .on("mouseover", function(d) {
                     //1. nodes get bigger
                     d3.select(this) // Get bigger on hover
