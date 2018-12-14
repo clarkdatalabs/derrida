@@ -214,17 +214,17 @@ d3.csv("data/dataNode.csv", function(data) {
 
     // Add the scatterplot and links
         drawScattersAndLinks('id', data, g, gLinks, y, height, div);
-        // drawScattersAndLinks('author', data, g, gLinks, y, height, div);
 
-        var showOption = d3.selectAll('.showOption')
-                            .on('change', function(){
-                                gLinks.remove();
-                                g.remove();
-                                gLinks = main.append('g')
-                                                .attr('class', 'link');
-                                g = main.append("svg:g");
-                                drawScattersAndLinks(this.value, data, g, gLinks, y, height, div);
-                            })
+            // have the radio button work to switch back and forth
+                // var showOption = d3.selectAll('.showOption')
+                //                     .on('change', function(){
+                //                         gLinks.remove();
+                //                         g.remove();
+                //                         gLinks = main.append('g')
+                //                                         .attr('class', 'link');
+                //                         g = main.append("svg:g");
+                //                         drawScattersAndLinks(this.value, data, g, gLinks, y, height, div);
+                //                     })
 
 
 
@@ -266,6 +266,7 @@ function drawScattersAndLinks(baseOnCol, data, g, gLinks, y, height, tooltopDiv 
                 .on("mouseover", function(d) {
 
                                 nodeHighlighted(d, data, true);
+                                nodeWithSameAuthorHighlighted(d, data, true, showOtherPublicationsWithTheSameAuthor);
 
                                 toggleTooltip(tooltopDiv, d, 1, baseOnCol);
 
@@ -277,6 +278,7 @@ function drawScattersAndLinks(baseOnCol, data, g, gLinks, y, height, tooltopDiv 
 
                 .on("mouseout", function(d) {
                                 nodeHighlighted(d, data, false);
+                                nodeWithSameAuthorHighlighted(d, data, false, showOtherPublicationsWithTheSameAuthor);
 
                                 toggleTooltip(tooltopDiv, d, 0)
 
@@ -383,16 +385,36 @@ function languageHeightChange(selectedLanguageLegendId, ifHighlight){
 
 //integrate all above
 
+function nodeWithSameAuthorHighlighted(d, data, ifHighlight, showOtherPublicationsWithTheSameAuthor){
+    if (! showOtherPublicationsWithTheSameAuthor) return;
+    
+    let authorName = d.author;
+    let nodeHoveredId = d.id;
+    let nodeR = ifHighlight ? 10 : 5;
+    for (let i = 0; i < data.length; i ++){
+        let thisData = data[i];
+        if (thisData.author == authorName && thisData.id != nodeHoveredId){
+            let nodeId = '#node' + thisData.id;
+            let nodeNode = d3.select(nodeId).node();
+            nodeRChange(nodeNode, nodeR);
+        }
+    }
+}
+
+
 function nodeHighlighted(d, data, ifHighlight){
+
+    // let authorName = d.author;
     let nodeId = '#node' + d.id;
     let nodeNode = d3.select(nodeId).node();
-
-
     let nodeR = ifHighlight ? 10 : 5;
 
 
     //1. nodes get bigger
     nodeRChange(nodeNode, nodeR);
+
+
+
 
     //2. highlight the lines linking the hovered node
     lineClassName = '.' + 'node' + d.id;
