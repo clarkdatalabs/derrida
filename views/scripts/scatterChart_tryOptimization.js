@@ -384,16 +384,14 @@ function toggleTooltip(tooltipDiv, d, opacity, baseOnCol=''){
     }
 }
 
-function toggleLines(lineClassName, toggleType){ // type1: hovered. type2: publications with the same author
-  let toggleClassName = toggleType == 1 ? 'highlighted' : 'sideHighlighted';
-    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle(toggleClassName));
+function toggleLines(lineClassName){
+    d3.selectAll(lineClassName).nodes().forEach(line => line.classList.toggle('highlighted'));
 }
 
-function togglePages(pageNumIds, ifHighlight, toggleType){ // type1: hovered. type2: publications with the same author
-    let toggleClassName = toggleType == 1 ? 'highlighted' : 'sideHighlighted';
+function togglePages(pageNumIds, ifHighlight){
     pageNumIds.forEach((pageId) => {
         d3.select(pageId)
-            .classed(toggleClassName,ifHighlight)
+            .classed('highlighted',ifHighlight)
     })
 }
 
@@ -415,32 +413,13 @@ function nodeWithSameAuthorHighlighted(d, data, ifHighlight, showOtherPublicatio
 
     let authorName = d.author;
     let nodeHoveredId = d.id;
-    let nodeR = ifHighlight ? 8 : 5; //node with the same author would appear smaller
+    let nodeR = ifHighlight ? 10 : 5;
     for (let i = 0; i < data.length; i ++){
         let thisData = data[i];
         if (thisData.author == authorName && thisData.id != nodeHoveredId){
             let nodeId = '#node' + thisData.id;
             let nodeNode = d3.select(nodeId).node();
-
-            //1. nodes get bigger
             nodeRChange(nodeNode, nodeR);
-
-            //2. highlight the lines linking the hovered node
-            let lineClassName = '.' + 'node' + thisData.id;
-            toggleLines(lineClassName, 2);
-
-            //3. highlight the pages linked to the hovered node
-            let sidePageNumIds = [];
-
-            let referenceTitle = thisData.bookTitle;
-
-            data.forEach((aData) => {
-                if (aData.bookTitle == referenceTitle){
-                    sidePageNumIds.push('#' + 'page' + aData.page)
-                }
-            })
-
-            togglePages(sidePageNumIds, ifHighlight, 2);
         }
     }
 }
@@ -451,7 +430,7 @@ function nodeHighlighted(d, data, ifHighlight){
     // let authorName = d.author;
     let nodeId = '#node' + d.id;
     let nodeNode = d3.select(nodeId).node();
-    let nodeR = ifHighlight ? 14 : 5;
+    let nodeR = ifHighlight ? 10 : 5;
 
 
     //1. nodes get bigger
@@ -462,7 +441,7 @@ function nodeHighlighted(d, data, ifHighlight){
 
     //2. highlight the lines linking the hovered node
     lineClassName = '.' + 'node' + d.id;
-    toggleLines(lineClassName, 1);
+    toggleLines(lineClassName);
 
     //3. highlight the pages linked to the hovered node
     pageNumIds = [];
@@ -475,7 +454,7 @@ function nodeHighlighted(d, data, ifHighlight){
         }
     })
 
-    togglePages(pageNumIds, ifHighlight, 1);
+    togglePages(pageNumIds, ifHighlight);
 
     // //4. highlight the language lengend accordingly
     // let selectedLanguageClass = d3.select(nodeNode).node().classList[1];
