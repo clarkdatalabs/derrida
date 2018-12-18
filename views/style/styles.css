@@ -53,9 +53,15 @@ rect.page.active {
     stroke-width: 1;
 }
 
+rect.page.active.sideHighlighted {
+    stroke: rgba(255, 187, 0, 0.1);
+}
+
 rect.page.active.highlighted {
     stroke: rgba(255, 187, 0, 0.849);
 }
+
+
 
 circle.reference {
     opacity: 0.05;
@@ -87,15 +93,26 @@ line.link.show.highlighted {
     opacity: 0.8;
 }
 
+line.link.show.sideHighlighted {
+    stroke-width: 0.4;
+    stroke: rgba(255, 187, 0, 0.4);
+    opacity: 0.8;
+}
 
-/*
-    Highlights
-*/
+
 line.link.highlighted{
     stroke: rgba(255, 187, 0, 0.849);
     stroke-width: 0.8;
     opacity: 0.15;
 }
+
+line.link.sideHighlighted{
+    stroke: rgba(255, 187, 0, 0.4);
+    stroke-width: 0.2;
+    opacity: 0.15;
+}
+
+
 
 
 
