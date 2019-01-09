@@ -368,12 +368,13 @@ function toggleTooltip(tooltipDiv, d, opacity, baseOnCol=''){
             let divHeight = tooltipDiv.node().getBoundingClientRect().height;
             let blockLegendY = 155; //use console to ditect...
             let divY;
-                divY = d3.event.pageY - divHeight - nodeNode.r.baseVal.value * 2; //based on the height of the tooltip, decide it's Y value
+                divY = d3.event.pageY - divHeight * 3/5;
+                console.log(divY) //based on the height of the tooltip, decide it's Y value
             let divX;
                 if (d3.event.pageX < svgWidth - 5 * 55 - divWidth){
-                    divX = d3.event.pageX + nodeNode.r.baseVal.value * 2; // tooltip is to the right of the big node
+                    divX = d3.event.pageX + nodeNode.r.baseVal.value * 4; // tooltip is to the right of the big node
                 } else{
-                    divX = d3.event.pageX - nodeNode.r.baseVal.value * 2 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
+                    divX = d3.event.pageX - nodeNode.r.baseVal.value * 4 - divWidth; // tooltip is to the left of the big node to avoid blocking legend
                     if (d3.event.pageX >= svgWidth - 5 * 55 && divY < blockLegendY){ // if the tooltip block the legend from below
                         divY = blockLegendY;
                     }
