@@ -195,35 +195,35 @@ d3.csv("data/dataNode.csv", function(data) {
                 languageHeightChange(selectedLanguageLegendId, true)
 
                 hoveredLanguageNodesDs = data.filter((dn) => dn.language == hoveredLanguage);
-                // console.log(hoveredLanguageNodesDs)
-                if (hoveredLanguage== 'fr' && darkblue_memory !== undefined) {
-                    hoveredLanguageNodesDs = darkblue_memory;
-                    console.log('using darkblue');
-                    return;
-                }
+                // // console.log(hoveredLanguageNodesDs)
+                // if (hoveredLanguage== 'fr' && darkblue_memory !== undefined) {
+                //     hoveredLanguageNodesDs = darkblue_memory;
+                //     console.log('using darkblue');
+                //     return;
+                // }
 
                 hoveredLanguageNodesDs.forEach((n_d) => nodeHighlighted(n_d, data, true))
-                console.log(hoveredLanguageNodesDs);
-                if (hoveredLanguage== 'fr') {
-                    darkblue_memory = JSON.parse(JSON.stringify(hoveredLanguageNodesDs))
-                    console.log('saving darkblue');
-                }
+                // // console.log(hoveredLanguageNodesDs);
+                // if (hoveredLanguage== 'fr') {
+                //     darkblue_memory = JSON.parse(JSON.stringify(hoveredLanguageNodesDs))
+                //     console.log('saving darkblue');
+                // }
 
             })
             .on("mouseout", function(d) {
                 let hoveredLanguage = d.language;
                 languageHeightChange(selectedLanguageLegendId, false)
-                if (baseline_memory !== undefined) {
-                    hoveredLanguageNodesDs = baseline_memory;
-                    console.log('out');
-                    return;
-                }
-                // console.log(hoveredLanguageNodesDs)
+                // if (baseline_memory !== undefined) {
+                //     hoveredLanguageNodesDs = baseline_memory;
+                //     console.log('out');
+                //     return;
+                // }
+                // // console.log(hoveredLanguageNodesDs)
                 hoveredLanguageNodesDs.forEach((n_d) => nodeHighlighted(n_d, data, false))
-                if (baseline_memory == undefined) {
-                    baseline_memory = JSON.parse(JSON.stringify(hoveredLanguageNodesDs));
-                    console.log('saved baseline');
-                }
+                // if (baseline_memory == undefined) {
+                //     baseline_memory = JSON.parse(JSON.stringify(hoveredLanguageNodesDs));
+                //     console.log('saved baseline');
+                // }
             })
 
 
