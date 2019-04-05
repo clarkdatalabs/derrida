@@ -108,10 +108,11 @@ d3.csv("data/dataNode.csv", function(data) {
     svg.append("text")
         .attr("transform",
             "translate(" + (width/1.2) + " ," +
-            (height + margin.top + pageHeight + 40) + ")")
-
+            (height + margin.top + pageHeight - 200) + ")")
         .style("text-anchor", "start")
         .text("Page of Reference");
+
+        console.log(height + margin.top + pageHeight - 200)
 
 
     // Create the y axis

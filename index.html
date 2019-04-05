@@ -11,11 +11,29 @@
     <body>
 
         <h3 style="display: inline-block;">Derrida's Sources <br>Citations and References in <i>Of Grammatology</i></h3>
-        <p style="color: lightgrey; font-size: 0.8em; display: inline-block; margin-left:5vw;">Data from Princeton's <a href="https://derridas-margins.princeton.edu/">Derrida's Margins Project.</a> </p>
+
+        <!-- <p style="color: lightgrey; font-size: 0.8em; display: inline-block; margin-left:5vw;">Data from Princeton's <a href="https://derridas-margins.princeton.edu/">Derrida's Margins Project.</a> </p> -->
         <!-- <form >
             <input class="showOption" type="radio" name="scatte·rShow" value="id" checked> Publication<br>
             <input class="showOption" type="radio" name="scatterShow" value="author"> Author<br>
         </form> -->
+
+        <div style="margin: 0 1em 2em 4em;">
+            <p style="color: grey; font-size: 0.9em;">
+                Jacques Derrida is one of the major figures of twentieth-century thought, and his library - which bears the traces of
+                decades of close reading - represents a major intellectual archive. The Princeton University Library (PUL) houses
+                <a href="https://figshare.com/collections/Derrida_s_Margins_datasets/4256927/1">Derrida's Margins</a>, a website and online
+                research tool for the annotations of Jacques Derrida. We used data collected from this project to create visualizations of
+                the references used throughout Derrida's <i>De la grammatologie</i>.<br><br>
+
+                This code can be adapted to create an interactive visualization for any data set, either for book references or another type,
+                 which includes many entries, an x-axis location for each entry, a y-axis location for each entry, and information to
+                 display with the mouse-over feature. The interactive and visual components are most interesting when entries are not discrete,
+                 and can be connected with a significant frequency to many locations along the x-axis.
+            </p>
+
+        </div>
+
         <div class="switchGroup">
             <p>
                 Drag x-axis to adjust page range.
@@ -50,7 +68,7 @@
                 var numOfPageEveryRec = 1;
                 var margin_left = 84.5;
                 var margin_right = 10;
-                var margin_bottom = 40;
+                var margin_bottom = 50;
                 var padding_in_between = 2.2;
 
                 var pageHeight = 40;
